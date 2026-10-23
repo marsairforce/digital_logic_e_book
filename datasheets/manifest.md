@@ -1,0 +1,34 @@
+# Datasheet manifest
+
+Every datasheet this book relies on, with the exact revision its values
+were verified against and the official source. See `README.md` in this
+folder for how to rebuild a local PDF library from this list.
+
+Local copies are **not** committed to this repo (see `.gitignore`).
+
+Where the official-source column names a document number rather than a
+link, search the manufacturer's site for that document number — it finds
+the exact datasheet even when URLs change.
+
+## Chapter 1 — transistors
+
+Verified 23 October 2026.
+
+| Part | Manufacturer | Document | Revision checked | Official source | Local filename | Used in |
+| --- | --- | --- | --- | --- | --- | --- |
+| MMBT3904 | onsemi | MMBT3904L, General Purpose Transistor, NPN Silicon | MMBT3904LT1/D Rev. 15, Sep 2026 | <https://www.onsemi.com/pub/Collateral/MMBT3904LT1-D.pdf> | onsemi-mmbt3904.pdf | Ch. 1 BJT table, worked example |
+| MMDT3904 | Diodes Incorporated | MMDT3904, 40 V Dual NPN in SOT363 | DS30088 Rev. 19-2, Aug 2026 | <https://www.diodes.com/datasheet/download/MMDT3904.pdf> | diodes-mmdt3904.pdf | Ch. 1 BJT table |
+| MMBT3906 | Diodes Incorporated | MMBT3906, 40 V PNP in SOT23 | DS30059 Rev. 23-2, Oct 2025 | <https://www.diodes.com/datasheet/download/MMBT3906.pdf> | diodes-mmbt3906.pdf | Ch. 1 BJT table |
+| DMMT3906 (DMMT3906W) | Diodes Incorporated | DMMT3906W, 40 V Matched Pair PNP in SOT363 | DS30312 Rev. 13-2, Feb 2018 | <https://www.diodes.com/datasheet/download/DMMT3906W.pdf> | diodes-dmmt3906w.pdf | Ch. 1 BJT table |
+| BC846BPN | Nexperia | BC846BPN, 65 V, 100 mA NPN/PNP general-purpose transistor | Product data sheet, accessed Oct 2026 (revision to record at next pass) | <https://www.nexperia.com/product/BC846BPN> | nexperia-bc846bpn.pdf | Ch. 1 BJT table |
+| BSS123 | onsemi | BSS123, N-Channel Logic Level Enhancement Mode FET | BSS123/D Rev. 10, Nov 2021 | onsemi.com, document BSS123/D | onsemi-bss123.pdf | Ch. 1 MOSFET table |
+| 2N7002DW | Diodes Incorporated | 2N7002DW, Dual N-Channel Enhancement Mode FET | DS30120 Rev. 8-2 | diodes.com, document DS30120 | diodes-2n7002dw.pdf | Ch. 1 MOSFET table, worked example |
+| BSS84 | onsemi | BSS84LT1/D, MOSFET, Power, Single P-Channel, SOT-23, −50 V | Rev. 11, Jan 2020 | onsemi.com, document BSS84LT1/D | onsemi-bss84.pdf | Ch. 1 MOSFET table |
+| BSS84AKS | Nexperia | BSS84AKS, 50 V, 160 mA dual P-channel Trench MOSFET | Rev. 1, 23 May 2011 | nexperia.com, BSS84AKS product page | nexperia-bss84aks.pdf | Ch. 1 MOSFET table |
+| NTJD4105C | onsemi | NTJD4105C/D, MOSFET, Small Signal, Complementary, SC-88, 20 V / −8.0 V | Rev. 3, Jan 2025 | onsemi.com, document NTJD4105C/D | onsemi-ntjd4105c.pdf | Ch. 1 MOSFET table |
+
+## Later chapters
+
+Entries are added here as each chapter is verified, in the same format:
+gates and families (Ch. 3–4), combinational parts (Ch. 5), sequential
+parts (Ch. 6), and the Appendix A 74xx list.

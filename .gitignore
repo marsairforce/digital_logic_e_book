@@ -1,0 +1,6 @@
+# Local datasheet library: PDFs in datasheets/ are the reader's own
+# downloaded copies for bench reference and are NOT committed to this
+# repo (they are the manufacturers' documents; the book links to the
+# official sources instead — see datasheets/manifest.md).
+# The folder's README.md and manifest.md are committed.
+datasheets/*.pdf
