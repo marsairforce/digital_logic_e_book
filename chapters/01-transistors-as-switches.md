@@ -186,18 +186,26 @@ For BJTs:
 - **Vce(sat)** — the voltage left across a fully-on transistor,
   quoted at a stated current. Your conduction loss is
   P = Vce(sat) × Ic — that is the heat you must get rid of.
-- **Vbe(on)** — the base–emitter voltage of a conducting BJT, roughly
-  0.6–0.7 V for silicon, quoted here as the measured range. It is the
-  voltage you subtract from your drive signal when sizing the base
-  resistor.
+- **Vbe(sat)** — the base–emitter voltage of a BJT driven into
+  saturation, roughly 0.65–0.85 V for these silicon parts at 10 mA of
+  collector current. It is the voltage you subtract from your drive
+  signal when sizing the base resistor.
 
-| Transistor 1 | Transistor 2 | Part Number | Package | Vceo | Ic | hFE | Vce(sat) | Vbe(on) |
+All values below are maxima unless marked typ, verified against the
+manufacturer datasheets listed in the References (October 2026).
+
+| Transistor 1 | Transistor 2 | Part Number | Package | Vceo | Ic | hFE | Vce(sat) | Vbe(sat) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| NPN | (none) | MMBT3904 | SOT-23-3 | 40 V | 200 mA | 100–300 (at 10 mA) | 0.2 V (at 10 mA), 0.3 V (at 50 mA) | 0.65–0.85 V |
-| NPN | NPN | MMDT3904 | SOT-363 | 40 V | 200 mA | 100–300 (at 10 mA) | 0.2 V (at 10 mA), 0.3 V (at 50 mA) | 0.65–0.85 V |
-| PNP | (none) | MMBT3906 | SOT-23-3 | −40 V | −200 mA | 100–300 (at −10 mA) | −0.3 V (at 50 mA) | −0.65 to −0.85 V |
-| PNP | PNP | DMMT3906 | SOT-363 | −40 V | −200 mA | 100–300 (at −10 mA) | −0.3 V (at 50 mA) | −0.65 to −0.85 V |
-| NPN | PNP | BC846 family | SOT-363 | 65 V | 100 mA | 110–800 (by gain group) | 0.25 V (at 10 mA), 0.6 V (at 100 mA) | 0.58–0.77 V |
+| NPN | (none) | MMBT3904 | SOT-23-3 | 40 V | 200 mA | 100–300 (at 10 mA) | 0.2 V (at 10 mA), 0.3 V (at 50 mA) | 0.65–0.85 V (at 10 mA) |
+| NPN | NPN | MMDT3904 | SOT-363 | 40 V | 200 mA | 100–300 (at 10 mA) | 0.2 V (at 10 mA), 0.3 V (at 50 mA) | 0.65–0.85 V (at 10 mA) |
+| PNP | (none) | MMBT3906 | SOT-23-3 | −40 V | −200 mA | 100–300 (at −10 mA) | −0.25 V (at −10 mA), −0.40 V (at −50 mA) | −0.65 to −0.85 V (at −10 mA) |
+| PNP | PNP | DMMT3906 | SOT-363 | −40 V | −200 mA | 100–300 (at −10 mA) | −0.25 V (at −10 mA), −0.40 V (at −50 mA) | −0.65 to −0.85 V (at −10 mA) |
+| NPN | PNP | BC846BPN | SOT-363 | 65 V | 100 mA | 200–450 (B grade, at 2 mA) | — | — |
+
+The BC846BPN's saturation voltages are not reproduced here — they are in
+its Nexperia datasheet (References). Note the part number: plain BC846
+is a *single* NPN in SOT-23. The complementary pair in SOT-363 is the
+BC846BPN.
 
 Dual packages — two transistors in one SOT-363 — are not a curiosity.
 Keep them in mind; when we build gates from discrete transistors in
@@ -227,21 +235,28 @@ For MOSFETs:
   driving source has to work at speed: average gate current ≈ Qg ×
   switching frequency.
 
+Threshold voltages below are given as the datasheet's min–max range
+(typ where stated); on-resistances are maxima unless marked typ; gate
+charges are totals (Qg). All verified against the manufacturer
+datasheets in the References (October 2026).
+
 | Transistor 1 | Transistor 2 | Part Number | Package | Vdss | Id | Vgs(th) | Rds(on) | Qg |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| NMOS | (none) | BSS123 | SOT-23-3 | 100 V | 170 mA | 2.6 V | 6.0 Ω (at Vgs = 10 V) | 0.68 nC |
-| NMOS | NMOS | 2N7002DW | SOT-363 | 60 V | 115 mA | 2.0 V | 7.5 Ω (at Vgs = 5 V) | 0.35 nC |
-| PMOS | (none) | BSS84 | SOT-23-3 | −50 V | −130 mA | −2.0 V | 10.0 Ω (at Vgs = −5 V) | 0.60 nC |
-| PMOS | PMOS | BSS84AKS | SOT-363 | −50 V | −160 mA | −2.1 V | 7.5 Ω (at Vgs = −5 V) | 0.35 nC |
-| NMOS | PMOS | NTJD4105C | SOT-363 | N: 20 V, P: −20 V | N: 630 mA, P: −775 mA | N: 1.5 V, P: −1.5 V | N: 0.375 Ω (at 4.5 V), P: 0.260 Ω (at −4.5 V) | N: 0.62 nC, P: 0.82 nC |
+| NMOS | (none) | BSS123 | SOT-23-3 | 100 V | 170 mA | 0.8–2.0 V (typ 1.7 V) | 6.0 Ω (typ 1.2 Ω) at Vgs = 10 V | 1.8 nC typ (max 2.5 nC) |
+| NMOS | NMOS | 2N7002DW | SOT-363 | 60 V | 115 mA | 1.0–2.0 V | 7.5 Ω (typ 3.2 Ω) at Vgs = 5 V | not specified * |
+| PMOS | (none) | BSS84 | SOT-23-3 | −50 V | −130 mA | −0.9 to −2.0 V | 10.0 Ω (typ 4.7 Ω) at Vgs = −5 V | 2.2 nC typ |
+| PMOS | PMOS | BSS84AKS | SOT-363 | −50 V | −160 mA | −1.1 to −2.1 V (typ −1.6 V) | 7.5 Ω at Vgs = −10 V; 8.5 Ω at Vgs = −5 V | 0.35 nC (typ 0.26 nC) |
+| NMOS | PMOS | NTJD4105C | SOT-363 | N: 20 V, P: −8 V | N: 630 mA, P: −775 mA | N: 0.6–1.5 V (typ 0.92 V), P: −0.45 to −1.0 V (typ −0.83 V) | N: 0.375 Ω (typ 0.29 Ω) at 4.5 V, P: 0.30 Ω (typ 0.22 Ω) at −4.5 V | N: 1.3 nC typ, P: 2.2 nC typ |
 
-*Editorial note, to be removed before publication: the values in both
-tables were transcribed from the author's bench notes and are stated
-with the conditions given there. Every value is to be re-verified
-against the current manufacturer datasheet in the chapter's review
-pass, and the complementary-pair rows (BC846 family, NTJD4105C)
-re-checked for exact part/package variants, before this chapter is
-marked published.*
+* Diodes Incorporated's 2N7002DW datasheet specifies gate capacitances
+(Ciss typ 22 pF) but no total gate charge — an honest gap, and a useful
+reminder that not every datasheet answers every question.
+
+Two rows deserve a second look, because both correct common assumptions.
+The NTJD4105C is an **asymmetric** pair: a 20 V N-channel beside an
+8 V P-channel, not the matched ±20 V you might expect. And the BSS84AKS
+is a real, distinct part — Nexperia's dual PMOS in SOT-363 — not a typo
+for the single BSS84.
 
 ## Worked example: one LED, two switches
 
@@ -273,7 +288,7 @@ A switch designer promises saturation with a forced gain of 10:
 
 - Required base current: Ib = Ic / 10 = 20 mA / 10 = **2 mA**.
 - Voltage across the base resistor, driven from a 5 V signal:
-  5 V − 0.7 V (Vbe(on)) = 4.3 V.
+  5 V − 0.7 V (Vbe, from the Vbe(sat) range above) = 4.3 V.
 - Rb = 4.3 V / 0.002 A = **2150 Ω** → use **2.2 kΩ**, delivering
   ≈ 1.95 mA.
 
@@ -297,17 +312,21 @@ calculation. Three small things replace it:
   load on uninvited. Remember this resistor. Chapter 2 is built on the
   trouble floating inputs cause.
 - A line in the power budget anyway: the gate charge has to come from
-  somewhere. Average gate current = Qg × frequency. For
-  Qg = 0.35 nC switched at 100 kHz, that is
-  0.35 × 10⁻⁹ × 100 × 10³ ≈ **35 µA** — nothing. At 20 mA and human
-  timescales, our LED driver will never notice. A motor driver at
-  20 kHz and amperes of load will notice very much, which is why gate
-  drivers exist as a product category — and why Qg is in the table.
+  somewhere. Average gate current = Qg × frequency. Take the BSS123
+  from the table (Qg typ 1.8 nC): switched at 100 kHz, that is
+  1.8 × 10⁻⁹ × 100 × 10³ ≈ **180 µA** — still nothing. At 20 mA and
+  human timescales, our LED driver will never notice. A motor driver
+  at 20 kHz and amperes of load will notice very much, which is why
+  gate drivers exist as a product category — and why Qg is in the
+  table. (The 2N7002DW's own datasheet gives no Qg; see the table's
+  footnote. Its gate capacitance, Ciss typ 22 pF, tells the same story
+  at this scale.)
 
 ### The heat check
 
 - BJT: Vce(sat) × Ic = 0.2 V × 20 mA = **4 mW**. Nothing.
-- MOSFET: Id² × Rds(on) = (0.02 A)² × 7.5 Ω = **3 mW**. Nothing.
+- MOSFET: Id² × Rds(on) = (0.02 A)² × 7.5 Ω (the maximum, so the
+  pessimistic case) = **3 mW**. Nothing.
 
 Both parts are loafing, exactly as intended for a first build. The point
 of doing the arithmetic when the answer is "nothing" is to have the
@@ -329,9 +348,13 @@ same current:
    0.2 V, the MOSFET's Vds near 0.15 V, and both LEDs indistinguishable
    by eye — the differences live in the drive, not the load.
 
-Schematic: TODO — KiCad source `schematics/ch01-led-drivers.kicad_sch`
-and export in `images/`, to be added when this chapter's figures are
-drawn.
+![BJT LED driver — NPN low-side switch](../images/ch01-bjt-led-driver.svg)
+
+![MOSFET LED driver — NMOS low-side switch, with gate resistor and pull-down](../images/ch01-mosfet-led-driver.svg)
+
+The KiCad sources for both figures live in `schematics/`
+(`ch01-bjt-led-driver.kicad_sch`, `ch01-mosfet-led-driver.kicad_sch`),
+so you can open them, poke at them, and make them your own.
 
 ## Gotchas
 
@@ -379,15 +402,31 @@ drawn.
 
 ## References
 
-1. onsemi, *MMBT3904* datasheet — NPN switching transistor used in the
-   worked example.
-2. Diodes Incorporated, *MMDT3904 / DMMT3906* datasheets — dual BJT
-   packages in the chapter table.
-3. onsemi, *BSS123* datasheet; Nexperia, *2N7002* family datasheets —
-   small-signal MOSFETs in the chapter table.
-4. Paul Horowitz and Winfield Hill, *The Art of Electronics*,
-   chapters on bipolar transistors and MOSFETs — the regions
-   terminology and characteristics used here, at full depth.
+All datasheet values in this chapter were verified against the
+revisions below on 23 October 2026, and are indexed in
+[datasheets/manifest.md](../datasheets/manifest.md).
 
-*Specific datasheet revisions to be recorded at this chapter's review
-pass, along with the table verification noted in the Theory section.*
+1. onsemi, *MMBT3904L — General Purpose Transistor, NPN Silicon*,
+   publication MMBT3904LT1/D, Rev. 15 (September 2026).
+2. Diodes Incorporated, *MMDT3904 — 40 V Dual NPN Small-Signal
+   Transistor in SOT363*, DS30088 Rev. 19-2 (August 2026).
+3. Diodes Incorporated, *MMBT3906 — 40 V PNP Small-Signal Transistor
+   in SOT23*, DS30059 Rev. 23-2 (October 2025). (onsemi's equivalent
+   document is MMBT3906LT1/D.)
+4. Diodes Incorporated, *DMMT3906W — 40 V Matched Pair PNP Small
+   Signal Transistor in SOT363*, DS30312 Rev. 13-2 (February 2018).
+5. Nexperia, *BC846BPN — 65 V, 100 mA NPN/PNP general-purpose
+   transistor*, product data sheet (accessed October 2026).
+6. onsemi, *BSS123 — N-Channel Logic Level Enhancement Mode Field
+   Effect Transistor*, BSS123/D, Rev. 10 (November 2021).
+7. Diodes Incorporated, *2N7002DW — Dual N-Channel Enhancement Mode
+   Field Effect Transistor*, DS30120 Rev. 8-2.
+8. onsemi, *BSS84LT1/D — MOSFET, Power, Single P-Channel, SOT-23,
+   −50 V*, Rev. 11 (January 2020).
+9. Nexperia, *BSS84AKS — 50 V, 160 mA dual P-channel Trench MOSFET*,
+   product data sheet Rev. 1 (23 May 2011).
+10. onsemi, *NTJD4105C/D — MOSFET, Small Signal, Complementary,
+    SC-88, 20 V / −8.0 V*, Rev. 3 (January 2025).
+11. Paul Horowitz and Winfield Hill, *The Art of Electronics*,
+    chapters on bipolar transistors and MOSFETs — the regions
+    terminology and characteristics used here, at full depth.

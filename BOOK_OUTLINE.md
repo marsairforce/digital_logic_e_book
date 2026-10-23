@@ -23,6 +23,12 @@ accurate, honest about corner cases, and referenced.
 - A programmer or systems engineer going the other way: from software down
   to the bare metal.
 
+The book has a specific test reader: the author's 14-year-old son, who
+builds along with him. A chapter passes when a curious 14-year-old wants
+to keep reading, can follow every step, and can build the thing. If it
+would bore or baffle him, it gets rewritten — that standard outranks
+completeness for its own sake.
+
 Assumed knowledge: very little beyond curiosity — the Preface refreshes
 voltage, current, resistance, capacitors, inductors and semiconductors for
 anyone who needs it, and a multimeter is introduced by use. Not assumed:
@@ -247,11 +253,27 @@ retired later.
 
 ## Publishing
 
-Start as plain Markdown in this repo, readable on GitHub, with the README
-as the front page and table of contents. Adding a static site (MkDocs
-Material or mdBook via a GitHub Actions workflow) is a later step, once
-there is finished text worth dressing up — the chapter layout here is
-already compatible with both. That decision is deliberately deferred.
+The book is written as plain Markdown in this repo, readable on GitHub,
+with the README as the front page and table of contents — that stays the
+source of truth and the author's local reading experience (VS Code
+Markdown preview) throughout.
+
+**Target platform: VitePress** (decided October 2026). When there is
+finished text worth dressing up, a GitHub Actions workflow will build
+the repo's Markdown into a VitePress site on merge to `main` and
+publish it to GitHub Pages: a proper e-book with sidebar navigation,
+full-text search, and clean rendering of the tables, images and
+schematics. Implications to respect from now on, so the migration is a
+configuration job rather than a rewrite:
+
+- Keep chapters as ordinary Markdown with relative links and relative
+  image paths (VitePress consumes both as-is)
+- Keep the folder layout stable (`chapters/`, `appendices/`, `images/`);
+  the VitePress sidebar can be generated from the README contents list
+- Mathematics stays in `$...$` LaTeX notation, which VitePress renders
+- Any VitePress-specific configuration lives in its own `.vitepress/`
+  folder and must never become load-bearing for reading the raw
+  Markdown
 
 ## Order of work
 

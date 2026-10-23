@@ -13,7 +13,9 @@ chapter ends with its sources.
 > Status: early draft. The chapter skeletons and the writing plan exist;
 > the chapter text is being built up from the notes. See
 > [BOOK_OUTLINE.md](BOOK_OUTLINE.md) for the full plan, and `notes/` for
-> the raw material the chapters are drawn from.
+> the raw material the chapters are drawn from. Publishing target: a
+> VitePress site on GitHub Pages, built by GitHub Actions on merge —
+> see the Publishing section of the outline.
 
 ## Contents
 
@@ -43,6 +45,10 @@ chapter ends with its sources.
 - `templates/` — the chapter template every chapter follows
 - `schematics/` and `images/` — KiCad sources and exported figures
   (added as chapters gain their circuits)
+- `datasheets/` — your own local PDF library (not committed; see
+  `datasheets/README.md`) and `datasheets/manifest.md`, the index of
+  every datasheet this book relies on, with its verified revision and
+  official source
 - [BOOK_OUTLINE.md](BOOK_OUTLINE.md) — vision, structure, where each note
   fragment belongs, and the editorial conventions (citations, figures,
   numbers, voice)
