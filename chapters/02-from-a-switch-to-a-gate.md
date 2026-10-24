@@ -122,6 +122,16 @@ promises, and every specimen on every day works.
 
 ### The operations
 
+Each operation also has a shape — its logic symbol. From here on, the
+book draws the shape, not the transistors, whenever the circuit inside
+does not matter. The six shapes below are in the same order as the
+columns of the table that follows, so you can read symbol, name and
+truth in one glance. A small circle — a *bubble* — on a pin means
+inversion: a NAND is an AND shape with a bubble on its output, and the
+bubble is the whole difference.
+
+![Logic gate symbols — NOT, AND, OR, NAND, NOR, XOR](../images/ch02-gate-symbols.svg)
+
 With two inputs, A and B, and one output, Y:
 
 | A | B | NOT A | A AND B | A OR B | A NAND B | A NOR B | A XOR B |
@@ -142,6 +152,26 @@ In words (read 0 as low/false and 1 as high/true):
 - **NOR**: NOT OR — 1 only when all inputs are 0.
 - **XOR** (exclusive OR): 1 when the inputs *differ*. Its complement,
   XNOR, is 1 when they match — an equality detector.
+
+### Layers of abstraction
+
+Step back and notice what has happened twice already. In Chapter 1, a
+sandwich of doped silicon became a transistor, and then the transistor
+became a symbol — three lines and an arrow. In this chapter, a handful
+of transistors and a resistor became a gate, and then the gate became
+a shape. Each step throws away detail and keeps only what the next
+level up needs to know.
+
+That is how all of electronics is built: in layers of abstraction.
+Nobody designs a computer by thinking about holes in silicon, and
+nobody debugs a gate by thinking about doping. You work at the highest
+layer that still explains what you see, and you drop down a layer only
+when it stops explaining — when the LED drags the "high" down to
+2.2 V, the gate symbol has nothing to say, and the circuit underneath
+does. Chapter 3 will make the point again, louder: six different
+families, six different circuits, and the same NAND symbol on top of
+all of them. The symbol is the contract; the circuit is one way of
+keeping it.
 
 ### Why NAND and NOR run the world
 
