@@ -39,9 +39,8 @@ allowed_elements = [ "a", "span", "br", "img" ]
 [MD046]
 style = "fenced"
 
-# Disable specific rules globally if needed (equivalent to "rule-name": false in JSON)
-[rules]
-# "no-hard-tabs": false means you want to ignore MD010 (Hard tabs)
-ignore = ["MD010", "MD009"]
-# "whitespace": false broadly covers many rules, often MD009 (Trailing spaces)
-# and potentially others. You may need to list all the specific rule IDs you want to ignore here.
+# MD009 (trailing spaces) and MD010 (hard tabs) are deliberately left
+# enabled: no tabs and no end-of-line spaces anywhere, except inside
+# code blocks, which rumdl already exempts for both rules. (An earlier
+# [rules] ignore = ["MD010", "MD009"] entry was not a rumdl setting and
+# only produced an "Unknown rule: ignore" warning, so it is removed.)
