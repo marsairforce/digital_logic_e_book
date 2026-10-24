@@ -73,6 +73,17 @@ There are two kinds:
   regions, with all currents reversed. Current flows into the emitter
   and out of the collector and base.
 
+Here is that sandwich in cross-section:
+
+![NPN bipolar transistor — simplified cross-section](../images/ch01-bjt-geometry.svg)
+
+The sketch is a layer diagram, not a photograph of a real part: in a
+planar device the same layers are laid out sideways across the chip
+surface, but the order — and the thin base — is the same. The thinness
+matters: most carriers injected from the emitter cross the base before
+they can recombine there, which is what lets a small base current
+control a much larger collector current.
+
 A BJT is **current-controlled**. A small current into the base permits
 a much larger current from collector to emitter. The ratio is the
 transistor's gain:
@@ -116,6 +127,18 @@ three terminals, but the family resemblance ends quickly:
 - **Drain (D)** — where they leave it
 - **Gate (G)** — the control terminal, insulated from the channel by a
   thin layer of oxide
+
+Here is the NMOS device in cross-section:
+
+![NMOS transistor — simplified cross-section](../images/ch01-mosfet-geometry.svg)
+
+Source and drain are two N wells in a P body, and they do not touch:
+the gap between them is the channel region, and the gate sits above it,
+separated by oxide. In the enhancement-mode devices this book uses,
+there is no channel until the gate makes one: a positive gate voltage
+inverts the surface beneath it, forming a conductive N channel that
+joins source to drain. The gate never touches the silicon — that
+insulation is why it draws essentially no steady current.
 
 A MOSFET is **voltage-controlled**. Voltage on the gate creates an
 electric field through that oxide, and the field opens or closes a
