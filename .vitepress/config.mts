@@ -95,6 +95,10 @@ export default defineConfig({
             text: 'D — Bibliography and further reading',
             link: '/appendices/D-bibliography',
           },
+          {
+            text: 'E — Package reference',
+            link: '/appendices/E-package-reference',
+          },
         ],
       },
       {
