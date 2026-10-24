@@ -84,6 +84,19 @@ matters: most carriers injected from the emitter cross the base before
 they can recombine there, which is what lets a small base current
 control a much larger collector current.
 
+From here on, the book draws the transistor, not the sandwich. The
+schematic symbol is the first abstraction in this book: it keeps the
+three terminals and the one fact that matters for a switch — which way
+the emitter arrow points — and throws the geometry away.
+
+![BJT schematic symbols — NPN and PNP](../images/ch01-bjt-symbols.svg)
+
+The arrow lives on the **emitter**, and it points in the direction of
+conventional current through the emitter: out of the device for NPN,
+into it for PNP. That one arrow tells you which kind of BJT you are
+looking at and which way its currents flow. The bar is the base; the
+two slanted leads are collector (top) and emitter (bottom).
+
 A BJT is **current-controlled**. A small current into the base permits
 a much larger current from collector to emitter. The ratio is the
 transistor's gain:
@@ -139,6 +152,16 @@ there is no channel until the gate makes one: a positive gate voltage
 inverts the surface beneath it, forming a conductive N channel that
 joins source to drain. The gate never touches the silicon — that
 insulation is why it draws essentially no steady current.
+
+The symbol makes the same trade — geometry for meaning:
+
+![MOSFET schematic symbols — NMOS and PMOS, simplified three-terminal](../images/ch01-mosfet-symbols.svg)
+
+The gate is the bar set apart from the channel: that gap *is* the
+oxide, and it is why the gate draws no steady current. The arrow sits
+on the source lead and points in for NMOS, out for PMOS; it marks the
+body connection, tied to the source inside the part. This is the
+simplified three-terminal symbol that discrete datasheets use.
 
 A MOSFET is **voltage-controlled**. Voltage on the gate creates an
 electric field through that oxide, and the field opens or closes a
