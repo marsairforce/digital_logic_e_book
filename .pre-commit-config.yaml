@@ -1,0 +1,22 @@
+# Pre-commit checks for the book.
+#
+# The VitePress build is the book's real "lint" for links and rendering:
+# it fails on dead links (the Chapter 2 .kicad_sch links broke it) and on
+# pages that do not render. Running it here catches those failures before
+# a commit, instead of in the Pages workflow after a merge.
+#
+# Setup (once per checkout):
+#   pip install pre-commit   # or: pipx install pre-commit
+#   npm ci                   # the hook runs the local VitePress install
+#   pre-commit install
+#
+# Run it by hand any time with: pre-commit run --all-files
+repos:
+  - repo: local
+    hooks:
+      - id: vitepress-build
+        name: VitePress build
+        entry: npm run docs:build
+        language: system
+        pass_filenames: false
+        always_run: true

@@ -1,0 +1,21 @@
+# Runs the repo's pre-commit hooks on every pull request, so a PR cannot
+# land with a broken VitePress build (dead links, unrenderable pages).
+name: Pre-commit checks
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: pre-commit/action@v3.0.1
