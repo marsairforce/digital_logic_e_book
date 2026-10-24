@@ -73,6 +73,17 @@ There are two kinds:
   regions, with all currents reversed. Current flows into the emitter
   and out of the collector and base.
 
+Here is that sandwich in cross-section:
+
+![NPN bipolar transistor — simplified cross-section](../images/ch01-bjt-geometry.svg)
+
+The sketch is a layer diagram, not a photograph of a real part: in a
+planar device the same layers are laid out sideways across the chip
+surface, but the order — and the thin base — is the same. The thinness
+matters: most carriers injected from the emitter cross the base before
+they can recombine there, which is what lets a small base current
+control a much larger collector current.
+
 A BJT is **current-controlled**. A small current into the base permits
 a much larger current from collector to emitter. The ratio is the
 transistor's gain:
@@ -116,6 +127,18 @@ three terminals, but the family resemblance ends quickly:
 - **Drain (D)** — where they leave it
 - **Gate (G)** — the control terminal, insulated from the channel by a
   thin layer of oxide
+
+Here is the NMOS device in cross-section:
+
+![NMOS transistor — simplified cross-section](../images/ch01-mosfet-geometry.svg)
+
+Source and drain are two N wells in a P body, and they do not touch:
+the gap between them is the channel region, and the gate sits above it,
+separated by oxide. In the enhancement-mode devices this book uses,
+there is no channel until the gate makes one: a positive gate voltage
+inverts the surface beneath it, forming a conductive N channel that
+joins source to drain. The gate never touches the silicon — that
+insulation is why it draws essentially no steady current.
 
 A MOSFET is **voltage-controlled**. Voltage on the gate creates an
 electric field through that oxide, and the field opens or closes a
@@ -243,12 +266,12 @@ datasheets in the References (October 2026).
 | Transistor 1 | Transistor 2 | Part Number | Package | Vdss | Id | Vgs(th) | Rds(on) | Qg |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | NMOS | (none) | BSS123 | SOT-23-3 | 100 V | 170 mA | 0.8–2.0 V (typ 1.7 V) | 6.0 Ω (typ 1.2 Ω) at Vgs = 10 V | 1.8 nC typ (max 2.5 nC) |
-| NMOS | NMOS | 2N7002DW | SOT-363 | 60 V | 115 mA | 1.0–2.0 V | 7.5 Ω (typ 3.2 Ω) at Vgs = 5 V | not specified * |
+| NMOS | NMOS | 2N7002DW | SOT-363 | 60 V | 115 mA | 1.0–2.0 V | 7.5 Ω (typ 3.2 Ω) at Vgs = 5 V | not specified † |
 | PMOS | (none) | BSS84 | SOT-23-3 | −50 V | −130 mA | −0.9 to −2.0 V | 10.0 Ω (typ 4.7 Ω) at Vgs = −5 V | 2.2 nC typ |
 | PMOS | PMOS | BSS84AKS | SOT-363 | −50 V | −160 mA | −1.1 to −2.1 V (typ −1.6 V) | 7.5 Ω at Vgs = −10 V; 8.5 Ω at Vgs = −5 V | 0.35 nC (typ 0.26 nC) |
 | NMOS | PMOS | NTJD4105C | SOT-363 | N: 20 V, P: −8 V | N: 630 mA, P: −775 mA | N: 0.6–1.5 V (typ 0.92 V), P: −0.45 to −1.0 V (typ −0.83 V) | N: 0.375 Ω (typ 0.29 Ω) at 4.5 V, P: 0.30 Ω (typ 0.22 Ω) at −4.5 V | N: 1.3 nC typ, P: 2.2 nC typ |
 
-* Diodes Incorporated's 2N7002DW datasheet specifies gate capacitances
+† Diodes Incorporated's 2N7002DW datasheet specifies gate capacitances
 (Ciss typ 22 pF) but no total gate charge — an honest gap, and a useful
 reminder that not every datasheet answers every question.
 
