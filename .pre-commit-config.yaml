@@ -1,5 +1,10 @@
 # Pre-commit checks for the book.
 #
+# rumdl first (fast, per-file): the Markdown linter Travis already uses
+# in VS Code, driven by the repo's own .rumdl.toml. Lint only — it never
+# rewrites files. pre-commit installs rumdl itself in an isolated
+# environment, so no manual rumdl install is needed for the hook.
+#
 # The VitePress build is the book's real "lint" for links and rendering:
 # it fails on dead links (the Chapter 2 .kicad_sch links broke it) and on
 # pages that do not render. Running it here catches those failures before
@@ -12,6 +17,13 @@
 #
 # Run it by hand any time with: pre-commit run --all-files
 repos:
+  - repo: https://github.com/rvben/rumdl-pre-commit
+    rev: v0.2.67
+    hooks:
+      - id: rumdl
+        # notes/ is the raw quarry, deliberately untouched by the book's
+        # editing passes — do not lint it into shape.
+        exclude: ^notes/
   - repo: local
     hooks:
       - id: vitepress-build
