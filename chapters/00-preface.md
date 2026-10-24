@@ -164,6 +164,47 @@ to make two flavours.
 - **P-type** silicon has extra *holes* — missing electrons that behave
   like positive charges able to move.
 
+### Why boron makes P and phosphorus makes N
+
+The two flavours above are not arbitrary labels — they fall straight
+out of the periodic table.
+
+![A zoom into the periodic table: groups 13–15](../images/preface-periodic-table.svg)
+
+Silicon sits in group 14, so each silicon atom has four valence
+electrons — the outer electrons that form chemical bonds. In a silicon
+crystal, every atom bonds to four neighbours in a diamond lattice, and
+in the ideal picture every valence electron is spoken for in a bond.
+That is why pure silicon is a poor conductor: there are almost no free
+carriers to move.
+
+Doping swaps a few silicon atoms for neighbours from the columns
+either side:
+
+- Boron, in group 13, has only three valence electrons. Put a boron
+  atom where a silicon atom was, and one bond goes unmade — a missing
+  electron. That vacancy is a hole, and it can move: a neighbouring
+  electron steps into it, and the hole appears one step over. Boron is
+  called an *acceptor*, and the result is P-type silicon.
+- Phosphorus, in group 15, has five valence electrons. Four of them
+  make bonds like silicon's; the fifth is surplus, only loosely held,
+  and is easily freed to carry current. Phosphorus is called a
+  *donor*, and the result is N-type silicon.
+
+A hole is not a particle — it is the absence of an electron, moving by
+electrons shuffling into it — but for circuit purposes it behaves
+exactly like a positive charge carrier, which is why the book treats it
+as one.
+
+The amounts involved are astonishingly small: far less than one dopant
+atom per million silicon atoms in lightly doped material is enough to
+change its conductivity by orders of magnitude. The same trick works
+with the other neighbours in the figure — aluminium and gallium are
+acceptors, arsenic and antimony donors — and germanium, silicon's
+group-14 cousin below it, can be doped the same way. What this book
+does not need is the deeper physics behind the picture: energy bands
+and Fermi levels are real, and they are left to the further reading.
+
 Where p-type and n-type meet, they form a *p-n junction*, which conducts
 in one direction and not the other. That one-way behaviour, the simplest
 semiconductor device there is, is a **diode**. Let current through,
