@@ -231,7 +231,7 @@ which is exactly NAND.
 ![A NAND gate from two transistors (RTL style)](../images/ch02-rtl-nand.svg)
 
 KiCad source:
-[schematics/ch02-rtl-nand.kicad_sch](../schematics/ch02-rtl-nand.kicad_sch)
+[ch02-rtl-nand.kicad_sch](https://github.com/marsairforce/digital_logic_e_book/blob/main/schematics/ch02-rtl-nand.kicad_sch)
 
 **The pull-up and the low level.** When both transistors are on, the
 stack current is set by R1 and the two saturation voltages. Designing
@@ -307,7 +307,7 @@ asserted.
 ![The same NAND gate in CMOS (inside one gate of a 74HC00)](../images/ch02-cmos-nand.svg)
 
 KiCad source:
-[schematics/ch02-cmos-nand.kicad_sch](../schematics/ch02-cmos-nand.kicad_sch)
+[ch02-cmos-nand.kicad_sch](https://github.com/marsairforce/digital_logic_e_book/blob/main/schematics/ch02-cmos-nand.kicad_sch)
 
 Read the chip's circuit with Chapter 1 eyes. The two PMOS transistors
 sit in **parallel** between VDD and the output; the two NMOS sit in
