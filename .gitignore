@@ -4,3 +4,9 @@
 # official sources instead — see datasheets/manifest.md).
 # The folder's README.md and manifest.md are committed.
 datasheets/*.pdf
+
+# VitePress build artefacts: the site is built by the GitHub Action on
+# merge to main; nothing generated is committed.
+node_modules/
+.vitepress/dist/
+.vitepress/cache/
