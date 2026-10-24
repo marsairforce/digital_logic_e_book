@@ -173,6 +173,62 @@ families, six different circuits, and the same NAND symbol on top of
 all of them. The symbol is the contract; the circuit is one way of
 keeping it.
 
+### What a 1 is
+
+One more layer up — the highest one, and the one everything else
+serves. A **bit** is a single yes-or-no: true or false, 1 or 0. Two
+values are the smallest distinction a physical device can make
+reliably — on or off, high or low — and they turn out to be enough
+for everything: two values can count (binary numbers; Chapter 5's
+adders do the counting) and two values can reason. The rules for
+reasoning with them are **Boolean algebra**, George Boole's 1854
+system: AND, OR and NOT are operations on truth values, and a truth
+table is not a summary of a gate — it is the *definition* of the
+operation. The algebra exists before any transistor; a gate is a
+piece of hardware that performs it.
+
+Engineers write the operations three ways, and this book uses all
+three — words where the sentence wants them, symbols where the
+formula wants them:
+
+| Operation | Words | Algebra | Also seen |
+| --- | --- | --- | --- |
+| AND | A AND B | A·B | AB, A ∧ B, A ∩ B |
+| OR | A OR B | A + B | A ∨ B, A ∪ B |
+| NOT | NOT A | Ā | ¬A, A′, ~A |
+| XOR | A XOR B | A ⊕ B | — |
+
+Read A·B as "A and B" and A + B as "A or B": the plus sign is OR,
+not arithmetic addition, and the dot is AND, not multiplication.
+The symbols are borrowed because the algebra behaves like
+arithmetic in some ways and unlike it in others — A + A = A and
+A·A = A, which no ordinary number survives. The overbar is the
+NOT: Ā means "not A". The ∪ and ∩ forms come from set theory — OR
+is union, AND is intersection — and ∨ and ∧ are the logician's
+version of the same two shapes. In plain text, where no overbar is
+available, NOT is written A′ (A prime) or ~A, and AND as A*B —
+which is how Chapter 3 writes the TTL XOR as Y = (A + B)·(A·B)′.
+
+So a gate is two agreements stacked. The first is the logic: which
+truth table this gate computes. The second is the *encoding*: which
+voltages stand for 1 and which for 0. This book uses **positive
+logic** — the high band means 1, the low band means 0 — but that is
+a convention, not physics: read the same NAND gate with low as true
+and it becomes a NOR, as the De Morgan note below shows. And the
+encoding is a matter of bands, not points: a 1 is not 5.0 V, it is
+any voltage inside the band the family accepts — for the 74HC00,
+anything above 3.15 V reads as 1 and anything below 1.35 V reads
+as 0, with the forbidden zone between them. The noise margin is the
+slack that makes the agreement hold across real devices, real
+temperatures and real wiring.
+
+Hold that split in your head and Chapter 3 falls into place. Every
+family in it computes the *same* truth tables — the logic does not
+change from RTL to CMOS. What changes is the encoding: the voltages
+that mean 0 and 1, and the circuits that pull the output between
+them. A logic family is a tribe that agrees on an encoding and on a
+way of keeping it. Chapter 3 meets six of them.
+
 ### Why NAND and NOR run the world
 
 Look at what a transistor switch naturally does. A pull-up resistor
@@ -224,10 +280,12 @@ A few conventions carry the rest of the book:
   voltages "mean"; meaning is a contract between the people connecting
   the pins. Mostly an academic point — until De Morgan makes it a
   practical one:
-- **De Morgan, the practical form.** Swapping AND and OR while
-  flipping every input and output leaves the function unchanged:
-  NOT (A AND B) = (NOT A) OR (NOT B). Engineers use this daily, not as
-  algebra but as rewiring: it is how you discover that the NOR gate in
+- **De Morgan's theorem.** Swapping AND and OR while flipping every
+  input and output leaves the function unchanged, in both directions:
+  (A·B)̄ = Ā + B̄, and (A+B)̄ = Ā·B̄. In words: NOT (A AND B) =
+  (NOT A) OR (NOT B), and NOT (A OR B) = (NOT A) AND (NOT B).
+  Engineers use this daily, not as algebra but as rewiring: a bubble
+  pushed through a gate flips AND to OR (or back), so the NOR gate in
   your hand can stand in for the NAND you ran out of, by flipping how
   you read its pins.
 
