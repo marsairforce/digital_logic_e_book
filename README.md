@@ -35,6 +35,7 @@ chapter ends with its sources.
 - [Appendix B — Obsolete and hard-to-find parts](appendices/B-obsolete-parts.md)
 - [Appendix C — Glossary](appendices/C-glossary.md)
 - [Appendix D — Bibliography and further reading](appendices/D-bibliography.md)
+- [Appendix E — Package reference](appendices/E-package-reference.md)
 
 ## How this repo is organised
 

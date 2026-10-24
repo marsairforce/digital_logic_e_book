@@ -205,6 +205,12 @@ shift registers), new writing
 - **Appendix D — Bibliography and further reading.** Mims, Horowitz &
   Hill, manufacturer datasheets and application notes, and good modern
   microcontroller-era companions.
+- **Appendix E — Package reference.** Transistor, diode, passive and IC
+  packages ordered by size, with aliases, dimensions, pitch and a power
+  rule of thumb, plus true-scale silhouette strips. Drafted in full
+  2026-10-24 from manufacturer outline drawings; power figures are
+  order-of-magnitude bands tied to named parts, and anything unverified
+  is marked as such rather than filled in.
 
 ## Where the existing fragments land
 
