@@ -187,6 +187,28 @@ table is not a summary of a gate — it is the *definition* of the
 operation. The algebra exists before any transistor; a gate is a
 piece of hardware that performs it.
 
+Engineers write the operations three ways, and this book uses all
+three — words where the sentence wants them, symbols where the
+formula wants them:
+
+| Operation | Words | Algebra | Also seen |
+| --- | --- | --- | --- |
+| AND | A AND B | A·B | AB, A ∧ B, A ∩ B |
+| OR | A OR B | A + B | A ∨ B, A ∪ B |
+| NOT | NOT A | Ā | ¬A, A′, ~A |
+| XOR | A XOR B | A ⊕ B | — |
+
+Read A·B as "A and B" and A + B as "A or B": the plus sign is OR,
+not arithmetic addition, and the dot is AND, not multiplication.
+The symbols are borrowed because the algebra behaves like
+arithmetic in some ways and unlike it in others — A + A = A and
+A·A = A, which no ordinary number survives. The overbar is the
+NOT: Ā means "not A". The ∪ and ∩ forms come from set theory — OR
+is union, AND is intersection — and ∨ and ∧ are the logician's
+version of the same two shapes. In plain text, where no overbar is
+available, NOT is written A′ (A prime) or ~A, and AND as A*B —
+which is how Chapter 3 writes the TTL XOR as Y = (A + B)·(A·B)′.
+
 So a gate is two agreements stacked. The first is the logic: which
 truth table this gate computes. The second is the *encoding*: which
 voltages stand for 1 and which for 0. This book uses **positive
@@ -258,10 +280,12 @@ A few conventions carry the rest of the book:
   voltages "mean"; meaning is a contract between the people connecting
   the pins. Mostly an academic point — until De Morgan makes it a
   practical one:
-- **De Morgan, the practical form.** Swapping AND and OR while
-  flipping every input and output leaves the function unchanged:
-  NOT (A AND B) = (NOT A) OR (NOT B). Engineers use this daily, not as
-  algebra but as rewiring: it is how you discover that the NOR gate in
+- **De Morgan's theorem.** Swapping AND and OR while flipping every
+  input and output leaves the function unchanged, in both directions:
+  (A·B)̄ = Ā + B̄, and (A+B)̄ = Ā·B̄. In words: NOT (A AND B) =
+  (NOT A) OR (NOT B), and NOT (A OR B) = (NOT A) AND (NOT B).
+  Engineers use this daily, not as algebra but as rewiring: a bubble
+  pushed through a gate flips AND to OR (or back), so the NOR gate in
   your hand can stand in for the NAND you ran out of, by flipping how
   you read its pins.
 
