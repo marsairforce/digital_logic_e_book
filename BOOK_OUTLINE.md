@@ -149,6 +149,20 @@ survives of it today.
 The recipe matrix (NOT, NAND and NOR complete; AND, OR and XOR to be
 finished) lives in this chapter's hands-on sections.
 
+Planned box — "Why 14 and 16 pins?": the pin count is the function
+plus power — a quad 2-input gate is 4 × (2 inputs + 1 output) = 12
+signal pins + VCC + GND = 14, as is a hex inverter; 16 pins arrive
+when the function needs more signals (e.g. 74161 counter, 74138
+3-to-8 decoder). The DIP itself is a 1964 Fairchild invention (Don
+Forbes, Rex Rice, Bryant Rogers), the original DIP having 14 leads,
+created because transistor cans (TO-5/TO-18) topped out at about ten
+leads. Contrast with IBM's contemporary SLT hybrid modules (System/360,
+1964): discrete transistors and diodes on a ceramic substrate under a
+metal lid, chosen because IBM considered monolithic ICs too immature.
+Facts verified 2026-10-24; Appendix E's IC table carries the DIP
+dimensions, and Chapter 4 can use the pin counts without re-explaining
+them.
+
 Source material: `notes/logic_recipe_book.md`, `notes/logic_families.md`
 (first table)
 
