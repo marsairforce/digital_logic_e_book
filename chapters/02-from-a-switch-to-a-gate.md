@@ -26,6 +26,10 @@ is not AND or OR, but NAND and NOR.
 - A 5 V supply, a breadboard, and a multimeter
 - Two slide switches, or just jumper wires you can move between the
   +5 V rail and ground, for the inputs
+- For the Schmitt trigger build: three 2N3904s and resistors:
+  3.3 kΩ (×1), 2.2 kΩ (×2), 1.0 kΩ (×1), 4.7 kΩ (×2), 100 kΩ (×1),
+  10 kΩ (×2), 100 Ω (×1), 470 Ω (×1), and a red LED; plus a 10 kΩ
+  linear potentiometer, a 1 µF capacitor and a tactile pushbutton
 
 ## Theory
 
@@ -119,6 +123,100 @@ typical (not guaranteed) 74HC input actually flips somewhere near the
 middle of the supply, around 2.1–2.4 V on a 4.5 V rail. The bands are
 promises about the worst specimen on the worst day — design to the
 promises, and every specimen on every day works.
+
+### The Schmitt trigger: two thresholds are better than one
+
+A gate with one threshold has a weakness, and this chapter has
+already named it: the forbidden zone is a place, not a transition.
+Feed a gate an input that creeps slowly through that zone — a big
+capacitor charging, a lazy sensor, a finger on a wire — and the
+output lingers half-on, or worse, flips back and forth as noise
+nudges the input across the single trip point. The output
+chatters, and anything downstream counts every chatter as a real
+edge. One threshold is not enough when the input is slow or noisy.
+
+A **Schmitt trigger** fixes this by having *two* thresholds
+instead of one: an upper threshold **VT+**, crossed on the way up,
+and a lower threshold **VT−**, crossed on the way down. Between
+them the output holds whatever it was doing — it remembers which
+way the input came from. Once the input climbs past VT+ and the
+output flips, the threshold that would flip it back has moved
+away, down to VT−, so ordinary noise cannot flip it back: the
+input has to travel a long way the other way first. The distance
+between the two thresholds, VT+ − VT−, is the **hysteresis**, and
+it is the circuit's immunity to noise, bought in volts.
+
+The discrete version is two 2N3904s sharing one emitter resistor,
+and the hysteresis comes from that shared resistor. With the input
+low, Q2 is on and the shared emitter sits at ≈ 1.5 V, so the input
+must climb past ≈ 2.1 V — the emitter voltage plus one
+base–emitter drop — before Q1 can turn on at all. The moment Q1
+turns on, Q2 turns off, the emitter current falls, and the emitter
+voltage falls with it — so the input must now drop below ≈ 1.3 V
+before anything flips back. Two thresholds, one resistor, no extra
+parts. And the flip, once started, is fast: the positive feedback
+snaps the output over in roughly a hundred nanoseconds, even
+though the input that caused it took milliseconds to get there.
+
+Both thresholds are approximate, and the book says so plainly:
+they are derived from the transistor numbers, not measured on a
+bench, and two builds of the same circuit can differ by ±0.2–0.3 V
+per threshold. VT+ follows from a clean calculation — the emitter
+voltage plus one Vbe — while VT− is messier, because it depends on
+Q1 coming out of saturation, which depends on the transistor's
+gain. The bench measurement in this chapter is the authority:
+expect ≈ 2.1 V rising, ≈ 1.3 V falling, and a hysteresis of
+≈ 0.8 V.
+
+One fact to get right before anything else: this circuit is
+**non-inverting** — output HIGH when the input is HIGH, LOW when
+the input is LOW. Q1 inverts once and Q2 inverts again, and two
+inversions cancel. That is the *opposite* of the 74HC14, the IC
+Schmitt trigger Chapter 4 introduces, which inverts. If you expect
+the discrete circuit to invert and it does not, the circuit is not
+wrong — your expectation is.
+
+And one honesty note about the output itself. The raw output is
+Q2's collector, and when Q2 is on and saturated it sits at the
+emitter voltage plus one saturation drop: ≈ 1.7 V. That is **not**
+a valid logic LOW — it is above the 74HC VIL maximum of 1.35 V
+and far above TTL's 0.8 V. Never feed the raw output straight into
+74-series logic; the next gate may read it as a 1, or as neither.
+The schematic fixes this with a third transistor, Q3, as a buffer:
+its collector is a proper rail-to-rail logic output, ≈ 0.2 V when
+the input is HIGH and 5 V when it is LOW — inverted, exactly like
+a 74HC14 output. The LED hangs on the buffer too, never directly
+on Q2's collector: an LED there would steal a good share of Q2's
+1.5 mA of collector current and drag the thresholds around with it.
+Use the buffer's collector for the logic output if you want one;
+use it for the LED either way.
+
+This is also the "how and why" behind a switch debouncer. A
+mechanical switch does not make one clean contact: its contacts
+bounce open and closed for milliseconds, and each bounce is a
+fresh edge to anything counting. The Schmitt plus a resistor and
+a capacitor turns that mess into one clean edge — but be clear
+about which part does what. Hysteresis *alone* does not debounce
+a switch whose contacts bounce rail to rail, 0 V to 5 V: each
+bounce re-crosses both thresholds, and the output bounces with
+it. The capacitor is what saves you: it charges and discharges
+slowly through the resistor, so during a brief bounce gap its
+voltage barely moves and never re-crosses a threshold. The RC
+smooths the bounce into a slow ramp; the Schmitt snaps the slow
+ramp into one clean edge. Both parts are needed, and the bench
+build below shows them working together.
+
+The idea survives into the IC world: Chapter 4's 74HC14 is this
+same circuit, shrunk into silicon, with thresholds in the same
+region — its datasheet (NXP, Rev. 6) quotes VT+ typ 2.38 V and
+VT− typ 1.40 V at 4.5 V, against our discrete ≈ 2.1 V and
+≈ 1.3 V. Build the discrete version now, and the chip will feel
+like a familiar friend when you meet it.
+
+![A Schmitt trigger from two transistors](../images/ch02-schmitt-trigger.svg)
+
+KiCad source:
+[ch02-schmitt-trigger.kicad_sch](https://github.com/marsairforce/digital_logic_e_book/blob/main/schematics/ch02-schmitt-trigger.kicad_sch)
 
 ### The operations
 
@@ -411,6 +509,40 @@ up politely through 4.7 kΩ; the CMOS gate grabs the output with both
 hands. That difference — active pull-up *and* pull-down — is the
 "complementary" in CMOS, and it is why the LED is bright.
 
+7. Build the Schmitt trigger exactly as drawn: Q1, Q2 and Q3 are
+   2N3904s; Rc1 3.3 kΩ, Rc2 2.2 kΩ, Re 1.0 kΩ, R1 2.2 kΩ,
+   R2 4.7 kΩ, Rin 4.7 kΩ, Rpd 100 kΩ, Q3's base resistor 10 kΩ,
+   LED resistor 470 Ω and a red LED. You will also need a 10 kΩ
+   linear potentiometer, a 1 µF capacitor, a 10 kΩ pull-up, a
+   100 Ω resistor and a tactile pushbutton. A 5 V supply and a
+   multimeter; a scope if you have one.
+8. Potentiometer slow ramp: wire the 10 kΩ linear pot across +5 V
+   and ground, wiper to Rin. Sweep slowly by hand — about a second
+   end to end — watch the LED, and read the input voltage at the
+   two snap points with the multimeter. Expect the LED to snap on
+   at ≈ 2.1 V rising and off at ≈ 1.3 V falling: a hysteresis of
+   ≈ 0.8 V, obvious and repeatable. This measurement also settles
+   the polarity: LED on means input HIGH, exactly as the
+   non-inverting circuit promises.
+9. RC + switch debounce test: +5 V → 10 kΩ pull-up → node →
+   100 Ω → pushbutton → ground, with 1 µF from the node to ground,
+   and the node to Rin. Press the button: one clean LED transition,
+   press after press. The timing is the point: the capacitor
+   charges through the 10 kΩ pull-up with τ = 10 ms, so during a
+   ~1 ms bounce gap it recharges only ~10 %, to ≈ 0.5 V — well
+   below VT− — and the Schmitt never re-trips; it discharges
+   through the 100 Ω in τ = 0.1 ms, and the resistor limits the
+   discharge peak to 50 mA. If you have a scope, probe the raw
+   switch side of the 100 Ω resistor on one channel and the output
+   on the other: many ragged edges in, one clean edge out.
+10. Measure the raw output — Q2's collector, before the buffer —
+    in both states. HIGH is ≈ 5 V; LOW is ≈ 1.7 V — and that LOW
+    is the Gotcha made visible: above the 74HC VIL maximum of
+    1.35 V, so not a logic LOW at all. That is why the LED hangs
+    on the Q3 buffer and never on Q2's collector, and why the
+    buffer's collector — ≈ 0.2 V / 5 V — is the output you would
+    feed to real logic.
+
 ## Gotchas
 
 - **Floating inputs are not 0, not 1, and not safe to ignore.** A 74HC
@@ -424,8 +556,9 @@ hands. That difference — active pull-up *and* pull-down — is the
 - **The forbidden zone is a place, not a transition.** A slowly rising
   input — a big capacitor, a lazy sensor, a finger — can hold a CMOS
   gate half-on for as long as it lingers, wasting current the whole
-  time. Chapter 4 meets the proper cure (Schmitt-trigger inputs,
-  the 74HC14).
+  time. The discrete cure is in this chapter — the Schmitt trigger
+  section above, which gives the input two thresholds instead of one —
+  and the IC version is Chapter 4's 74HC14.
 - **Stacked means summed.** Two saturated transistors gave us ~0.2–0.4
   V of "low". Three would give more. Series stacking spends noise
   margin; spend it knowingly.
@@ -450,6 +583,10 @@ hands. That difference — active pull-up *and* pull-down — is the
   input ever be left floating.
 - Fan-out is a current budget in bipolar logic and a capacitance
   budget in CMOS.
+- A Schmitt trigger gives an input two thresholds instead of one:
+  the hysteresis between VT+ and VT− snaps a slow or noisy edge
+  into one clean transition, and with an RC in front of it, it
+  turns a bouncing switch into a single edge.
 
 ## Extensions
 
@@ -477,3 +614,13 @@ hands. That difference — active pull-up *and* pull-down — is the
    logic levels and CMOS gate internals at full depth.
 3. Forrest M. Mims III, *Getting Started in Electronics* — the
    friendliest first encounter with gate truth tables.
+4. Wikipedia, "Schmitt trigger" — the classic emitter-coupled
+   circuit this chapter's discrete Schmitt trigger follows:
+   <https://en.wikipedia.org/wiki/Schmitt_trigger>
+5. element14 Community blog, "Transistors: The Schmitt Trigger" —
+   built and simulated at 5 V, with thresholds ≈ 2.1 V rising /
+   ≈ 1.5 V falling:
+   <https://community.element14.com/members-area/personalblogs/b/blog/posts/transistors-the-schmitt-trigger>
+6. NXP, *74HC14 — Hex inverting Schmitt trigger*, product data
+   sheet Rev. 6 (19 September 2012) — VT+ typ 2.38 V, VT− typ
+   1.40 V at 4.5 V, the IC comparison figures quoted in Theory.
