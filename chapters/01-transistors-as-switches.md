@@ -243,12 +243,12 @@ datasheets in the References (October 2026).
 | Transistor 1 | Transistor 2 | Part Number | Package | Vdss | Id | Vgs(th) | Rds(on) | Qg |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | NMOS | (none) | BSS123 | SOT-23-3 | 100 V | 170 mA | 0.8–2.0 V (typ 1.7 V) | 6.0 Ω (typ 1.2 Ω) at Vgs = 10 V | 1.8 nC typ (max 2.5 nC) |
-| NMOS | NMOS | 2N7002DW | SOT-363 | 60 V | 115 mA | 1.0–2.0 V | 7.5 Ω (typ 3.2 Ω) at Vgs = 5 V | not specified * |
+| NMOS | NMOS | 2N7002DW | SOT-363 | 60 V | 115 mA | 1.0–2.0 V | 7.5 Ω (typ 3.2 Ω) at Vgs = 5 V | not specified † |
 | PMOS | (none) | BSS84 | SOT-23-3 | −50 V | −130 mA | −0.9 to −2.0 V | 10.0 Ω (typ 4.7 Ω) at Vgs = −5 V | 2.2 nC typ |
 | PMOS | PMOS | BSS84AKS | SOT-363 | −50 V | −160 mA | −1.1 to −2.1 V (typ −1.6 V) | 7.5 Ω at Vgs = −10 V; 8.5 Ω at Vgs = −5 V | 0.35 nC (typ 0.26 nC) |
 | NMOS | PMOS | NTJD4105C | SOT-363 | N: 20 V, P: −8 V | N: 630 mA, P: −775 mA | N: 0.6–1.5 V (typ 0.92 V), P: −0.45 to −1.0 V (typ −0.83 V) | N: 0.375 Ω (typ 0.29 Ω) at 4.5 V, P: 0.30 Ω (typ 0.22 Ω) at −4.5 V | N: 1.3 nC typ, P: 2.2 nC typ |
 
-* Diodes Incorporated's 2N7002DW datasheet specifies gate capacitances
+† Diodes Incorporated's 2N7002DW datasheet specifies gate capacitances
 (Ciss typ 22 pF) but no total gate charge — an honest gap, and a useful
 reminder that not every datasheet answers every question.
 
