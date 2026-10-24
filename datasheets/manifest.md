@@ -35,8 +35,21 @@ Verified 23 October 2026.
 | --- | --- | --- | --- | --- | --- | --- |
 | 74HC00 / 74HCT00 | Nexperia | 74HC00; 74HCT00 — Quad 2-input NAND gate | Rev. 11, 29 Apr 2025 | <https://www.nexperia.com/products/analog-logic-ics/logic/gates/nand-gates/serie/74hc00-74hct00> | nexperia-74hc00.pdf | Ch. 2 logic levels, noise margins, timing |
 
+## Chapter 3 — logic families
+
+Verified 23–24 October 2026.
+
+| Part | Manufacturer | Document | Revision checked | Official source | Local filename | Used in |
+| --- | --- | --- | --- | --- | --- | --- |
+| 74LS00 | onsemi | SN74LS00/D, Quad 2-Input NAND Gate | Rev. 7, Oct 2001 | <https://www.onsemi.com/pub/Collateral/SN74LS00-D.PDF> | onsemi-sn74ls00.pdf | Ch. 3 74LS00 table, noise margins, fan-out |
+| CD4011B | Texas Instruments | CD4011B, CMOS Quad 2-Input NAND Gate | Product data sheet, accessed Oct 2026 (revision to record at next pass) | <https://www.ti.com/product/CD4011B> | ti-cd4011b.pdf | Ch. 3 4000-series CMOS figures |
+| MC10101 | onsemi | MC10101/D, Quad 2-Input OR/NOR Gate (MECL 10K) | Rev. 7, Jan 2002 | onsemi.com, document MC10101/D | onsemi-mc10101.pdf | Ch. 3 ECL 10K figures |
+| BSS126 | Infineon | BSS126I, SIPMOS Small-Signal Transistor | Rev. 2.2, 1 Jul 2022 | infineon.com, document BSS126I | infineon-bss126.pdf | Ch. 3 NMOS depletion load |
+| NTS4409N | onsemi | NTS4409N/D, MOSFET Single N-Channel Small Signal, ESD Protection | NTS4409N/D | onsemi.com, document NTS4409N/D | onsemi-nts4409n.pdf | Ch. 3 NMOS NOT switch |
+| NTJD4401N | onsemi | NTJD4401N/D, Dual N-Channel 20 V MOSFET, SC-88 / SOT-363 | NTJD4401N/D | onsemi.com, document NTJD4401N/D | onsemi-ntjd4401n.pdf | Ch. 3 NMOS NAND switches |
+
 ## Later chapters
 
 Entries are added here as each chapter is verified, in the same format:
-families (Ch. 3–4), combinational parts (Ch. 5), sequential parts
+74xx families (Ch. 4), combinational parts (Ch. 5), sequential parts
 (Ch. 6), and the Appendix A 74xx list.
