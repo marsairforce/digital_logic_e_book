@@ -173,6 +173,40 @@ families, six different circuits, and the same NAND symbol on top of
 all of them. The symbol is the contract; the circuit is one way of
 keeping it.
 
+### What a 1 is
+
+One more layer up — the highest one, and the one everything else
+serves. A **bit** is a single yes-or-no: true or false, 1 or 0. Two
+values are the smallest distinction a physical device can make
+reliably — on or off, high or low — and they turn out to be enough
+for everything: two values can count (binary numbers; Chapter 5's
+adders do the counting) and two values can reason. The rules for
+reasoning with them are **Boolean algebra**, George Boole's 1854
+system: AND, OR and NOT are operations on truth values, and a truth
+table is not a summary of a gate — it is the *definition* of the
+operation. The algebra exists before any transistor; a gate is a
+piece of hardware that performs it.
+
+So a gate is two agreements stacked. The first is the logic: which
+truth table this gate computes. The second is the *encoding*: which
+voltages stand for 1 and which for 0. This book uses **positive
+logic** — the high band means 1, the low band means 0 — but that is
+a convention, not physics: read the same NAND gate with low as true
+and it becomes a NOR, as the De Morgan note below shows. And the
+encoding is a matter of bands, not points: a 1 is not 5.0 V, it is
+any voltage inside the band the family accepts — for the 74HC00,
+anything above 3.15 V reads as 1 and anything below 1.35 V reads
+as 0, with the forbidden zone between them. The noise margin is the
+slack that makes the agreement hold across real devices, real
+temperatures and real wiring.
+
+Hold that split in your head and Chapter 3 falls into place. Every
+family in it computes the *same* truth tables — the logic does not
+change from RTL to CMOS. What changes is the encoding: the voltages
+that mean 0 and 1, and the circuits that pull the output between
+them. A logic family is a tribe that agrees on an encoding and on a
+way of keeping it. Chapter 3 meets six of them.
+
 ### Why NAND and NOR run the world
 
 Look at what a transistor switch naturally does. A pull-up resistor
