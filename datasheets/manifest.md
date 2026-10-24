@@ -27,8 +27,16 @@ Verified 23 October 2026.
 | BSS84AKS | Nexperia | BSS84AKS, 50 V, 160 mA dual P-channel Trench MOSFET | Rev. 1, 23 May 2011 | nexperia.com, BSS84AKS product page | nexperia-bss84aks.pdf | Ch. 1 MOSFET table |
 | NTJD4105C | onsemi | NTJD4105C/D, MOSFET, Small Signal, Complementary, SC-88, 20 V / −8.0 V | Rev. 3, Jan 2025 | onsemi.com, document NTJD4105C/D | onsemi-ntjd4105c.pdf | Ch. 1 MOSFET table |
 
+## Chapter 2 — gates
+
+Verified 23 October 2026.
+
+| Part | Manufacturer | Document | Revision checked | Official source | Local filename | Used in |
+| --- | --- | --- | --- | --- | --- | --- |
+| 74HC00 / 74HCT00 | Nexperia | 74HC00; 74HCT00 — Quad 2-input NAND gate | Rev. 11, 29 Apr 2025 | <https://www.nexperia.com/products/analog-logic-ics/logic/gates/nand-gates/serie/74hc00-74hct00> | nexperia-74hc00.pdf | Ch. 2 logic levels, noise margins, timing |
+
 ## Later chapters
 
 Entries are added here as each chapter is verified, in the same format:
-gates and families (Ch. 3–4), combinational parts (Ch. 5), sequential
-parts (Ch. 6), and the Appendix A 74xx list.
+families (Ch. 3–4), combinational parts (Ch. 5), sequential parts
+(Ch. 6), and the Appendix A 74xx list.
