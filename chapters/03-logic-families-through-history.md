@@ -157,6 +157,27 @@ drawn as two devices sharing a base and a collector — the
 standard discrete equivalent. The resistor values are the classic
 7400 values (R1 4 kΩ, R2 1.6 kΩ, R3 1 kΩ, R4 130 Ω).
 
+One honest limit of this drawing, because the figure invites you
+to build it: Q1a and Q1b are a *model* of the input transistor,
+not the transistor. The real 7400 input is a single transistor
+with two emitter wells diffused into one shared base region,
+under one collector — the second emitter is a feature of the
+manufacturing process, not a second part. You cannot buy that
+device as a discrete component: nobody makes a multi-emitter
+transistor in a TO-92 or a SOT-23, because the structure only
+makes sense on a chip. Wiring two 2N3904s in parallel gives you
+the same schematic and a gate that works — that is why the drawing
+is the standard textbook equivalent — but the emitters share a
+wire, not a piece of silicon: two separate base regions on two
+separate dice, with their own gains and their own stored charge.
+So build it as a demonstration by all means — the NAND will NAND
+— but do not expect it to match the datasheet's input currents or
+speed. And notice what this means: the trick that makes TTL fast
+— one low input clamping the shared base and yanking the charge
+out of the phase splitter — lives inside one piece of silicon.
+That is why TTL is an integrated-circuit family, not a bag of
+parts.
+
 The original 7400 (1964) ran at the textbook figures of about
 **10 ns** of propagation delay for about **10 mW** per gate — an
 order of magnitude faster than the RTL and DTL it replaced, and TTL
