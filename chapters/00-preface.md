@@ -51,6 +51,73 @@ supply with respect — it will happily melt a wire or a fingertip's
 illusion of invincibility — and give electrolytic capacitors the polarity
 respect they demand in the section below.
 
+## Setting up your bench
+
+"Who this book is for" promised you a bench and a handful of cheap and
+obtainable parts. This is the list — everything the bench builds in this
+book assume, bought once and used for the whole book. Each chapter's "You
+will need" names the parts for its own builds; the tools below are what
+those builds are built with.
+
+**Essentials:**
+
+- **Breadboard.** Full-size, and a decent one: a cheap board with loose
+  contacts will have you doubting your circuit when the board is the
+  fault. One board is enough to start; a second earns its keep when you
+  want the last build to stay built while you start the next.
+- **Power.** 5 V to start — a USB breadboard supply is enough, and a
+  bench supply is the upgrade for later. 3.3 V arrives in Chapter 4, and
+  the same supply that gives you 5 V usually gives you 3.3 V beside it.
+- **Hook-up wire.** Solid-core, tinned, in several colours — one colour
+  per signal makes a breadboard readable, and tinned wire does not
+  oxidise the way bare copper does. A wire stripper to match, and a
+  stripper gauge — a small jig that sets the stripped length so every
+  wire seats the same — is worth making or printing.
+- **Multimeter.** Digital, basic, and the book's main instrument: you
+  will measure voltage, continuity and current with it in every chapter.
+  It does not need to be expensive; it needs to be the one you reach for.
+- **Hand tools.** Needle-nose pliers for placing parts and bending
+  leads, tweezers for the small ones, and flush cutters for trimming
+  wire and leads.
+- **Soldering iron.** A fine tip, temperature-controlled if you can
+  stretch to it, and solder. You will need it for breakout boards and
+  for the occasional permanent build — and for nothing else in this
+  book, which is mostly breadboard work. No hot-air rework station is
+  needed: SOIC and TSSOP parts go down fine with a fine tip and drag
+  soldering.
+- **Breakout boards.** Small adapter boards that carry a surface-mount
+  part — SOIC, TSSOP and the like — and present it on a DIP footprint
+  your breadboard accepts. The usual distributors sell them ready-made,
+  and they are the answer for the day a part you need has no DIP version
+  at all. Chapter 4 explains why that day keeps coming.
+
+**Nice to have:**
+
+- **Logic probe.** It shows HIGH, LOW or pulsing at a glance, which is
+  faster than a meter when you are chasing a signal through a circuit.
+- **Component tester.** One of the cheap testers that identifies a
+  transistor, a capacitor or a resistor and tells you its value. It
+  earns its keep the first time you pick up a part whose markings you
+  cannot read — or a part you salvaged and never knew.
+- **Magnifier.** A loupe or a head-mounted magnifier for reading the
+  tiny markings on surface-mount parts and for checking solder joints.
+  A phone camera works in a pinch.
+
+**Not needed:**
+
+- **Oscilloscope.** This book is designed so a meter is enough. Where a
+  measurement seems to need a scope — the carry delay in Chapter 5, for
+  instance — the chapter shows a way to bring the answer down to where
+  a meter can read it.
+- **Hot-air rework station.** As above: a fine-tip iron covers
+  everything this book asks you to solder.
+
+**Safety, briefly:** leaded solder is easier to learn with than
+lead-free; wash your hands after handling it, work with ventilation,
+and never solder a circuit that is powered.
+
+That is the bench. Everything after this page assumes it is within reach.
+
 ## The fundamentals, briskly
 
 ### Voltage: the push
