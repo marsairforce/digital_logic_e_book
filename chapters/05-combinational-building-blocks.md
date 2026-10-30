@@ -1021,7 +1021,7 @@ The '138 has three enable inputs, and they are the first piece of glue
 in the part itself: **E1 and E2 are active LOW, E3 is active HIGH, and
 every output stays HIGH unless E1 and E2 are LOW and E3 is HIGH**.
 (The outputs are active-low: the selected one goes LOW, the rest sit
-HIGH.) The pinout, per Nexperia Rev. 7, §5.2 — Nexperia's names; TI
+HIGH.) The pinout, per Nexperia Rev. 10, §5.2 — Nexperia's names; TI
 calls the same pins A, B, C and G2A, G2B, G1, so expect both dialects
 on the bench:
 
@@ -1044,12 +1044,14 @@ on the bench:
 | 15 | Y0 | Output, active LOW (000) |
 | 16 | VCC | Supply voltage |
 
-UNVERIFIED: Nexperia's product listing dates the current 74HC138
-datasheet 2024-02-25, newer than the Rev. 7 copy (26 March 2018) the
-pinout and figures above were read from. Re-check the pinout against
-that revision before the chapter goes to print; the pinout is not
-expected to change between revisions of the same part, but the book's
-rule is to check.
+Checked against Nexperia Rev. 10 — 26 February 2024: the pinout is
+unchanged — §5.2 Table 2 gives A0–A2 pins 1–3, E1/E2 pins 4–5, E3 pin
+6, Y7 pin 7, GND pin 8, Y6–Y0 pins 9–15, VCC pin 16, matching Rev. 7
+pin-for-pin. Rev. 10's changes from Rev. 9 were only the ESD
+specification and package-outline drawings; §5.1 pinning had already
+been corrected in Rev. 8 (7 April 2020). Ordering in Rev. 10 lists only
+D, PW and BQ — the DIP 74HC138N/74HCT138N were removed in Rev. 6
+(28 December 2015), so the DIP buy remains TI's SN74HC138N.
 
 Two numbers from the datasheet are worth knowing. Supply is 2.0 V to
 6.0 V for the HC part (4.5 V to 5.5 V for the HCT, which has TTL input
