@@ -1345,11 +1345,11 @@ ALU, and an ALU plus registers and control make a CPU.
 
 #### The 74181: the chip that taught a generation what an ALU is
 
-In **1970**, Texas Instruments introduced the 74181 — the first
-complete ALU on a single chip. Say "1970" only: the two
-secondary sources disagree on the month (February in one,
-March in the other) and no primary TI announcement was found,
-so the month is UNVERIFIED. Before it, a minicomputer ALU was
+In February 1970, Texas Instruments introduced the 74181 — the first
+complete ALU on a single chip. (Höltgen, ed., Logik,
+Informationstheorie, De Gruyter, 2017, p. 115. One respected secondary
+source, Ken Shirriff, gives March 1970; no primary TI announcement has
+been found, so February rests on the published citation above.) Before it, a minicomputer ALU was
 a board full of individual gates; the 74181 let an entire CPU
 fit on one or a few boards. It is the hinge between 1960s
 discrete-logic CPUs and 1970s single-chip microprocessors —
