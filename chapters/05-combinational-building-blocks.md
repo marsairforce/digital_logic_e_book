@@ -1498,18 +1498,17 @@ functions — is Ken Shirriff's, from "Inside the vintage
 
 **Speed and power, for history, not for the bench.** Typical
 propagation delay: the original 74181, 22 ns; 74S181, 11 ns;
-74F181, 7.0 ns at 43 mA typical supply current; 74HC181,
-13 ns at VCC = 5 V with 4 µA maximum quiescent current.
+74LS181, 17 ns carry-in to F (26 ns max) and 22 ns A/B to F
+in logic mode; 74F181, 7.0 ns at 43 mA typical supply
+current; 74HC181, 13 ns at VCC = 5 V with 4 µA maximum
+quiescent current. The 74LS181 draws about 20 mA typical
+supply current (37 mA max).
 The honest line is that even the slowest 74181 (22 ns) is
 about 1,000× faster than anything a human can see on a bench;
 speed is history here, not a bench concern. Power *is* a bench
 concern only for the bipolar versions — the 74F181's 43 mA
 typical is about 10× a whole HC breadboard — which is one
 more reason to build the bench ALU in HC, not F or S.
-UNVERIFIED: the 74LS181's own switching characteristics and
-supply current — the TI datasheet pages carrying that table
-did not extract cleanly — so the chapter prints no LS speed
-or power numbers.
 
 **Machines that used it.** Lead with the three strongly
 sourced stories. The **Data General Nova 1200** (1970) used
