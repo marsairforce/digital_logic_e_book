@@ -32,6 +32,20 @@ working multi-bit adder growing into an ALU.
 
 ## Theory
 
+Before the details, the whole cast in one view:
+
+| Kind | In one sentence |
+|---|---|
+| Gates | Compute: AND, OR, NOT and XOR turn input bits into output bits — the atoms everything else is built from. |
+| Decoders | One binary number in, exactly one output on — the part that selects a chip, a line or a memory block (feed data into an enable and the same part is a demultiplexer). |
+| Encoders | Many request lines in, one binary code out — with priority, so the highest-order request wins. |
+| Multiplexers | Many inputs in, one output out — the select code picks which input gets through, and a mux can implement any logic function. |
+| Buffers and transceivers | Decide which chip gets to talk on a shared bus — drive it, or step aside. |
+| Comparators | Judge two numbers: equal, greater or less — the equality test and the threshold check. |
+| Parity generators | Add one check bit so a corrupted byte shows up — the simplest error check there is. |
+| Adders | Column sums with carries, from one bit to a whole word — half, full, ripple and lookahead. |
+| The ALU | All of it at once: one build that adds, subtracts, ANDs, ORs and XORs on command. |
+
 ### Routing signals
 
 Gates compute. Routing parts move signals around: a decoder picks
