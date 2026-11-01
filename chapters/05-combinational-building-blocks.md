@@ -2136,6 +2136,17 @@ as the delay element.
 
 ## Extensions
 
+- Build the adder from gates, no 283: one full adder is 2 XOR +
+  2 AND + 1 OR — a 74HC86, a 74HC08 and a 74HC32, all already in
+  the parts list — wired as two half adders plus an OR for the
+  carries. Four of them chained make a 4-bit ripple adder:
+  20 gates on 5 chips (two 86s, two 08s, one 32 — one more 08
+  than the chapter's list). Then compare: the 283 does the
+  same job in one chip, with carry lookahead instead of ripple.
+  The wiring tedium is the point — it is why the IC exists.
+  Bonus: on the ripple build you can watch the carry glitch
+  the Gotchas section warns about, where the 283's lookahead
+  hides it.
 - Cascading adders to 8 bits and beyond; a multiplier as repeated
   addition.
 - Version B of the ALU: four 74HC151 8-to-1 multiplexers in place of
