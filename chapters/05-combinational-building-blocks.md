@@ -32,6 +32,20 @@ working multi-bit adder growing into an ALU.
 
 ## Theory
 
+Before the details, the whole cast in one view:
+
+| Kind | In one sentence |
+|---|---|
+| Gates | Compute: AND, OR, NOT and XOR turn input bits into output bits — the atoms everything else is built from. |
+| Decoders | One binary number in, exactly one output on — the part that selects a chip, a line or a memory block (feed data into an enable and the same part is a demultiplexer). |
+| Encoders | Many request lines in, one binary code out — with priority, so the highest-order request wins. |
+| Multiplexers | Many inputs in, one output out — the select code picks which input gets through, and a mux can implement any logic function. |
+| Buffers and transceivers | Decide which chip gets to talk on a shared bus — drive it, or step aside. |
+| Comparators | Judge two numbers: equal, greater or less — the equality test and the threshold check. |
+| Parity generators | Add one check bit so a corrupted byte shows up — the simplest error check there is. |
+| Adders | Column sums with carries, from one bit to a whole word — half, full, ripple and lookahead. |
+| The ALU | All of it at once: one build that adds, subtracts, ANDs, ORs and XORs on command. |
+
 ### Routing signals
 
 Gates compute. Routing parts move signals around: a decoder picks
@@ -1021,7 +1035,7 @@ The '138 has three enable inputs, and they are the first piece of glue
 in the part itself: **E1 and E2 are active LOW, E3 is active HIGH, and
 every output stays HIGH unless E1 and E2 are LOW and E3 is HIGH**.
 (The outputs are active-low: the selected one goes LOW, the rest sit
-HIGH.) The pinout, per Nexperia Rev. 7, §5.2 — Nexperia's names; TI
+HIGH.) The pinout, per Nexperia Rev. 10, §5.2 — Nexperia's names; TI
 calls the same pins A, B, C and G2A, G2B, G1, so expect both dialects
 on the bench:
 
@@ -1044,12 +1058,14 @@ on the bench:
 | 15 | Y0 | Output, active LOW (000) |
 | 16 | VCC | Supply voltage |
 
-UNVERIFIED: Nexperia's product listing dates the current 74HC138
-datasheet 2024-02-25, newer than the Rev. 7 copy (26 March 2018) the
-pinout and figures above were read from. Re-check the pinout against
-that revision before the chapter goes to print; the pinout is not
-expected to change between revisions of the same part, but the book's
-rule is to check.
+Checked against Nexperia Rev. 10 — 26 February 2024: the pinout is
+unchanged — §5.2 Table 2 gives A0–A2 pins 1–3, E1/E2 pins 4–5, E3 pin
+6, Y7 pin 7, GND pin 8, Y6–Y0 pins 9–15, VCC pin 16, matching Rev. 7
+pin-for-pin. Rev. 10's changes from Rev. 9 were only the ESD
+specification and package-outline drawings; §5.1 pinning had already
+been corrected in Rev. 8 (7 April 2020). Ordering in Rev. 10 lists only
+D, PW and BQ — the DIP 74HC138N/74HCT138N were removed in Rev. 6
+(28 December 2015), so the DIP buy remains TI's SN74HC138N.
 
 Two numbers from the datasheet are worth knowing. Supply is 2.0 V to
 6.0 V for the HC part (4.5 V to 5.5 V for the HCT, which has TTL input
@@ -1343,11 +1359,11 @@ ALU, and an ALU plus registers and control make a CPU.
 
 #### The 74181: the chip that taught a generation what an ALU is
 
-In **1970**, Texas Instruments introduced the 74181 — the first
-complete ALU on a single chip. Say "1970" only: the two
-secondary sources disagree on the month (February in one,
-March in the other) and no primary TI announcement was found,
-so the month is UNVERIFIED. Before it, a minicomputer ALU was
+In February 1970, Texas Instruments introduced the 74181 — the first
+complete ALU on a single chip. (Höltgen, ed., Logik,
+Informationstheorie, De Gruyter, 2017, p. 115. One respected secondary
+source, Ken Shirriff, gives March 1970; no primary TI announcement has
+been found, so February rests on the published citation above.) Before it, a minicomputer ALU was
 a board full of individual gates; the 74181 let an entire CPU
 fit on one or a few boards. It is the hinge between 1960s
 discrete-logic CPUs and 1970s single-chip microprocessors —
@@ -1482,18 +1498,17 @@ functions — is Ken Shirriff's, from "Inside the vintage
 
 **Speed and power, for history, not for the bench.** Typical
 propagation delay: the original 74181, 22 ns; 74S181, 11 ns;
-74F181, 7.0 ns at 43 mA typical supply current; 74HC181,
-13 ns at VCC = 5 V with 4 µA maximum quiescent current.
+74LS181, 17 ns carry-in to F (26 ns max) and 22 ns A/B to F
+in logic mode; 74F181, 7.0 ns at 43 mA typical supply
+current; 74HC181, 13 ns at VCC = 5 V with 4 µA maximum
+quiescent current. The 74LS181 draws about 20 mA typical
+supply current (37 mA max).
 The honest line is that even the slowest 74181 (22 ns) is
 about 1,000× faster than anything a human can see on a bench;
 speed is history here, not a bench concern. Power *is* a bench
 concern only for the bipolar versions — the 74F181's 43 mA
 typical is about 10× a whole HC breadboard — which is one
 more reason to build the bench ALU in HC, not F or S.
-UNVERIFIED: the 74LS181's own switching characteristics and
-supply current — the TI datasheet pages carrying that table
-did not extract cleanly — so the chapter prints no LS speed
-or power numbers.
 
 **Machines that used it.** Lead with the three strongly
 sourced stories. The **Data General Nova 1200** (1970) used
