@@ -98,8 +98,12 @@ delay typ 13 / max 30 ns, enable delay typ 14 / max 30 ns at
 19 August 2021 (dynamic characteristics in Rev. 7,
 29 February 2016). No DIP: the Rev. 7 revision history states
 the DIP24 types (74HC154N, 74HCT154N) were removed — DIP
-discontinued in 2016. UNVERIFIED: whether TI offers SN74HC154N
-in DIP was not checked.
+discontinued in 2016. TI never offered an SN74HC154N — its
+HC154 is the CD74HC154, whose PDIP version was CD74HC154E.
+That PDIP is now obsolete (CD74HC154EE4 listed Obsolete; TI's
+11 Nov 2025 package addendum lists no PDIP variant — only the
+SOIC CD74HC154M96 remains Active, plus military CERDIP), so
+there is no current TI DIP buy for the HC154.
 
 The **74HC139** is the small-scale decoder: two independent 2-to-4
 decoders in one 16-pin package, each with its own active-LOW
@@ -126,17 +130,17 @@ typ 26 ns, to GS typ 19 ns, to EO typ 22 ns. One gotcha from the
 TI datasheet's application information: a HIGH-to-LOW change at
 EI can cause a transient LOW on GS when all inputs are HIGH,
 which must be considered when strobing the outputs. Datasheet:
-TI *SN54HC148 / SN74HC148*, SCLS109 Rev. G, April 2004 — and
+TI *SN54HC148 / SN74HC148*, SCLS109 Rev. H, March 2022 — and
 note the vendor, because **Nexperia does not make a 74HC148**,
-despite what the notes' links imply. Rev. H (2 March 2022) is
-the current revision, but its switching table was not read in
-full, so the numbers here are Rev. G. UNVERIFIED: the Rev. G
-switching-table maximum columns are ambiguously aligned in the
-PDF extraction, so no maximum delays are quoted; the data-input
-and A-output pin numbers were not cleanly confirmed either
-(confirmed: VCC pin 16, GND pin 8, EI pin 5, EO pin 15,
-GS pin 14). TI's headline "typical tpd = 16 ns" matches no
-path-dependent typical in Rev. G (19–26 ns at 4.5 V) and its
+despite what the notes' links imply. At 4.5 V the SN74HC148
+maxima are: inputs to A outputs 45 ns, to EO 38 ns, to GS
+48 ns; EI to A outputs 49 ns, to GS 36 ns, to EO 41 ns (at
+25 °C the maxima are 36, 30, 38, 39, 29 and 33 ns
+respectively). Pin numbers: data inputs 0–7 are pins 10, 11,
+12, 13, 1, 2, 3, 4; A0 pin 9, A1 pin 7, A2 pin 6; EI pin 5,
+EO pin 15, GS pin 14, GND pin 8, VCC pin 16. TI's headline
+"typical tpd = 16 ns" matches no
+path-dependent typical in Rev. H (19–26 ns at 4.5 V) and its
 test conditions are unstated — treat it as a headline only.
 SN74HC148N in PDIP is listed, with a distributor offer shown in
 stock.
@@ -208,11 +212,10 @@ pinout does not read left-to-right the way you expect.
 The **74HC245** is the 244's bidirectional partner: an octal bus
 transceiver with non-inverting 3-state outputs, where DIR sets
 the direction and an active-LOW OE enables the part; HIGH on OE
-puts both sides in high-impedance. UNVERIFIED: the Rev. 4
-function-table extraction is garbled, so the standard behaviour
-— DIR HIGH = A-to-B, DIR LOW = B-to-A — is stated here from the
-datasheet figure's convention and should be confirmed against
-that figure, not taken from the extracted table text.
+puts both sides in high-impedance. DIR HIGH = A-to-B, DIR
+LOW = B-to-A (TI's SCLS131 function table: OE low with DIR
+low sends B data to the A bus, OE low with DIR high sends A
+data to the B bus, and OE high isolates both sides).
 Through-delay typ 9 / max 18 ns at 4.5 V, the fastest part in
 this section. Datasheet: Nexperia *74HC245; 74HCT245*, Rev. 4,
 26 February 2016. Twenty pins; no DIP from Nexperia, but TI
@@ -239,7 +242,7 @@ section it means "drive a fixed level".
 Nexperia HC datasheets list no DIP (N) variant for the 138, 139,
 151, 153, 157, 154, 85, 280 or 245. The bench buy is TI's
 SN74HCxxN / CD74HCxxE lines, which still list PDIP for the 138,
-148, 157, 85 (as CD74HC85) and 245. The 244 is the exception
+148, 157, 85 (as CD74HC85), 245 and 280 (as CD74HC280E). The 244 is the exception
 that proves the rule — DIP20 is still in its Nexperia ordering
 table, though from a 2012 revision whose currency is unverified
 (see above). Check the vendor you are actually buying from, on
@@ -251,7 +254,7 @@ at another, and a family can be legacy and still orderable.
 | 74HC138 | 3-to-8 decoder/demux, active-LOW outputs, three enables | 16 | Nexperia Rev. 10, 26 Feb 2024 |
 | 74HC154 | 4-to-16 decoder/demux, two active-LOW enables | 24 | Nexperia Rev. 9, 19 Aug 2021 |
 | 74HC139 | Dual 2-to-4 decoder/demux, independent enables | 16 | Nexperia Rev. 4, 11 Dec 2015 |
-| 74HC148 | 8-to-3 priority encoder, EI/EO/GS cascade | 16 | TI SCLS109 Rev. G, Apr 2004 |
+| 74HC148 | 8-to-3 priority encoder, EI/EO/GS cascade | 16 | TI SCLS109 Rev. H, Mar 2022 |
 | 74HC147 | 10-to-4 priority encoder (decimal) — obsolete in HC | 16 | TI CD74HC147 (obsolete) |
 | 74HC151 | 8-input mux, complementary outputs | 16 | Nexperia Rev. 8, 18 Mar 2021 |
 | 74HC153 | Dual 4-input mux, common selects, separate enables | 16 | Nexperia Rev. 11, 11 Mar 2024 |
@@ -313,8 +316,11 @@ is slow-ish for a part this simple, typ 20 / max 40 ns to PE and
 typ 23 / max 40 ns to PO at 4.5 V, because the XOR tree inside
 is deep — a speed lesson in itself. Datasheet: Nexperia
 *74HC280; 74HCT280*, Rev. 4, 16 August 2021. Fourteen pins, SO14
-only for HC (HCT adds TSSOP14); no DIP for either. UNVERIFIED:
-whether TI offers a DIP version was not checked. The pinout is
+only for HC (HCT adds TSSOP14); no DIP from Nexperia. TI
+does offer a DIP: CD74HC280E, 14-pin PDIP, ACTIVE (datasheet
+SCHS175D Rev. D, Oct 2003) — TI's HC280 is the CD74HC280, so
+there is no SN74HC280N. Live TI-direct stock was not
+re-checked, so distributor stock is the safe buy. The pinout is
 untidy — pin 3 is no-connect, and the inputs are scattered
 around the package rather than in order (I6 pin 1, I7 pin 2,
 I8 pin 4, then I0–I5 on pins 8–13) — so this is another part to
