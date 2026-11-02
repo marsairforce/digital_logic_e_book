@@ -74,8 +74,12 @@ export default defineConfig({
             link: '/chapters/05-combinational-building-blocks',
           },
           {
-            text: '6. Sequential logic',
-            link: '/chapters/06-sequential-logic',
+            text: '6. Combinational building blocks on the bench',
+            link: '/chapters/06-combinational-building-blocks-on-the-bench',
+          },
+          {
+            text: '7. Sequential logic',
+            link: '/chapters/07-sequential-logic',
           },
         ],
       },

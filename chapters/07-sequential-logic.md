@@ -1,4 +1,4 @@
-# Chapter 6 — Sequential logic: memory, counters and clocks
+# Chapter 7 — Sequential logic: memory, counters and clocks
 
 Status: skeleton
 Source material:

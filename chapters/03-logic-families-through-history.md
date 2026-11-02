@@ -533,7 +533,7 @@ inputs. Then the Apollo exercise: the AGC built *everything*
 from NOR gates, so build everything from yours. Wire two of your
 NOR gates as inverters (tie both inputs together) and put them
 after a third NOR to make an OR; cross-couple two NORs into an
-SR latch (Chapter 6 will name it properly — for now, just notice
+SR latch (Chapter 7 will name it properly — for now, just notice
 that it *remembers*). Count the transistors. The AGC's engineers
 counted a few thousand dual-NOR ICs; you will understand, in your
 fingers, why they picked exactly one gate and learned it
