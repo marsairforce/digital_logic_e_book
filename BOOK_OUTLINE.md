@@ -189,12 +189,20 @@ reference table: encoders and decoders, multiplexers and demultiplexers,
 buffers and transceivers, magnitude comparators, parity, and adders —
 half, full, and the 74HC283 4-bit adder with fast carry.
 
-- Worked example / bench build: a multi-bit adder, then an ALU in the
-  spirit of the 74181 built from 74HC parts (the build-along project)
+- Worked example: a multi-bit adder, then an ALU in the
+  spirit of the 74181 built from 74HC parts — the builds
+  themselves are in Chapter 6
 
 Source material: `notes/74xx_logic.md` (list by function), new writing
 
-### Chapter 6 — Sequential logic: memory, counters and clocks
+### Chapter 6 — Combinational building blocks on the bench
+
+The bench companion to Chapter 5: Build A (4-bit adder on one
+74HC283), Build B (8-bit adder from two), Build C (gate-level
+ALU), and the carry-chain race. Readers who do not build can
+skip this chapter; nothing later requires it.
+
+### Chapter 7 — Sequential logic: memory, counters and clocks
 
 - Latches vs flip-flops: SR, D, JK; edge triggering; setup and hold at a
   level a bench builder can respect

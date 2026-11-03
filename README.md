@@ -27,7 +27,8 @@ chapter ends with its sources.
 3. [Logic families through history](chapters/03-logic-families-through-history.md)
 4. [The 74 series in practice](chapters/04-the-74-series-in-practice.md)
 5. [Combinational building blocks](chapters/05-combinational-building-blocks.md)
-6. [Sequential logic: memory, counters and clocks](chapters/06-sequential-logic.md)
+6. [Combinational building blocks on the bench](chapters/06-combinational-building-blocks-on-the-bench.md)
+7. [Sequential logic: memory, counters and clocks](chapters/07-sequential-logic.md)
 
 ### Appendices
 

@@ -184,7 +184,7 @@ Three behaviours explain almost every capacitor in this book:
 
 - A capacitor resists changes in voltage across it. Charge has to flow
   in or out to change that voltage, and that takes time. This is why
-  capacitors set timing: the clock circuits in Chapter 6 are, at heart,
+  capacitors set timing: the clock circuits in Chapter 7 are, at heart,
   a capacitor charging through a resistor until a threshold trips.
 - A capacitor blocks steady direct current once charged, but passes
   *changes*. It is why a capacitor across a chip's power pins — the
