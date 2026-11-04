@@ -359,7 +359,7 @@ as the delay element.
    MR = 11, Q0 = 9, Q1 = 7, Q2 = 6, Q3 = 5, Q4 = 3, Q5 = 2,
    Q6 = 4, Q7 = 13, Q8 = 12, Q9 = 14, Q10 = 15, Q11 = 1,
    GND = 8, VCC = 16. Qn divides by 2^(n+1), so Q11 divides
-   by 2048.
+   by 4096.
 3. **Read the frequency two ways.** The frequencies below
    are **derived estimates from typical tpd values at 5 V /
    15 pF — expect roughly, never built, never measured**;
@@ -370,7 +370,7 @@ as the delay element.
    2 × 27 ns = 54 ns, so **f ≈ 18 MHz**. That is far too
    fast to see or hear, so divide it. **Audio / meter
    method:** oscillator → CP of one 4040; Q11 ≈ 18 MHz /
-   2048 ≈ **8.8 kHz** — measurable on a cheap multimeter's
+   4096 ≈ **4.4 kHz** — measurable on a cheap multimeter's
    frequency range. **Visible method:** cascade a second
    4040 (Q11 of the first → CP of the second); total division
    2²⁴. An LED on the second chip's Q11 blinks at ≈ 18 MHz /
@@ -388,7 +388,7 @@ as the delay element.
    set both chips A = 1111, B = 0000). The added delay is
    about one more CIN → COUT, 20 ns typical, so the loop is
    47 ns per pass and **f ≈ 10.6 MHz** (derived estimate, as
-   above) → Q11 ≈ **5.2 kHz**, blink ≈ **0.63 Hz**. The
+   above) → Q11 ≈ **2.6 kHz**, blink ≈ **0.63 Hz**. The
    pitch drops and the blink slows by nearly half. The reader
    has *seen* 20 ns of carry delay with no scope — and the
    same trick with three or four 283s in the chain shows the
