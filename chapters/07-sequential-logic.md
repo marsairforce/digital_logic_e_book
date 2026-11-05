@@ -61,9 +61,8 @@ what to match, not the letters after the number.
 Pin numbers for the 74HC08 and 74HC32 gates are given in
 the schematic, using the standard TI gate placement
 (gate 1: inputs pins 1 and 2, output pin 3, GND pin 7,
-VCC pin 14). UNVERIFIED: that placement was not checked
-against the 74HC08/74HC32 datasheets for this chapter —
-check it before building from the schematic alone. Pin
+VCC pin 14), per TI SCLS081J Rev. J (74HC08) and SCLS200F
+Rev. F (74HC32). Pin
 numbers for the 74HC390 below come from Nexperia's
 74HC390 Rev. 6 (19 March 2024) pin description table;
 the pin diagram itself is the authority and its
@@ -1924,4 +1923,5 @@ which it should be at each count.
   MR pin 11.
 - TI, SN74HC08N / SN74HC32N — DIP orderables as listed
   in this chapter, following Chapter 5's TI DIP pattern;
-  gate-to-pin mappings UNVERIFIED (see You will need).
+  gate-to-pin mappings per TI SCLS081J, Rev. J, February
+  2025 (74HC08) and SCLS200F, Rev. F, April 2021 (74HC32).
