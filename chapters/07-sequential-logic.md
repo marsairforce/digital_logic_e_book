@@ -64,10 +64,9 @@ the schematic, using the standard TI gate placement
 VCC pin 14), per TI SCLS081J Rev. J (74HC08) and SCLS200F
 Rev. F (74HC32). Pin
 numbers for the 74HC390 below come from Nexperia's
-74HC390 Rev. 6 (19 March 2024) pin description table;
-the pin diagram itself is the authority and its
-cross-check is still open (UNVERIFIED as a diagram
-cross-check).
+74HC390 Rev. 6 (19 March 2024) pin description table
+and agree with TI's SCHS185 pin configuration (Rev. E,
+April 2022).
 
 What you already own from earlier chapters, not a new
 purchase: breadboard, jumper wire, 5 V supply, multimeter,
