@@ -1121,23 +1121,20 @@ no instrument to appreciate.
 Sourcing for the 4017 is the shakiest in this section, and
 this section does not smooth that over.
 
-**UNVERIFIED:** the current ACTIVE status of TI's
-CD74HC4017E in PDIP-16 (TI SCHS200D, Rev. D, October 2003,
-ordering table) was not confirmed from a TI product page
-checked for this chapter — the page extract showed the M, MT and PW
-variants as OBSOLETE and did not show the E variant's status.
-Nexperia's Rev. 5 ordering table lists the DIP 74HC4017N,
-but distributor listings now mark Nexperia DIP variants
-obsolete and only a surface-mount variant was shown Active
-on a Nexperia product page checked for this chapter, so current
-Nexperia DIP production is likewise **UNVERIFIED** and looks
-discontinued. The chapter must not promise a
-current-manufacturer DIP 4017. The practical advice is to
-buy whichever DIP 4017 (Nexperia N or TI E) a distributor
-actually has, and to check the pin table of the exact part
-bought, because the TI and Nexperia clock and carry naming
-differs. A drafting-time status check is required before any
-"order this" wording for the 4017.
+Nexperia's DIP 4017 is gone: its Rev. 5 ordering table
+(3 February 2016) lists only surface-mount variants, and
+distributor listings mark the DIP 74HCT4017N obsolete. The
+sole current-manufacturer DIP is TI's CD74HC4017E in PDIP-16
+(TI SCHS200D, Rev. D, October 2003), listed Active by
+distributors with a 16-week lead. **UNVERIFIED:** that ACTIVE
+from TI itself — TI direct was out of stock when checked, and
+TI's own product page shows no status word for the E variant —
+and current stock generally, so re-check before any "order
+this" wording. The chapter must not promise a
+current-manufacturer DIP 4017. The practical advice is to buy
+whichever DIP 4017 a distributor actually has, and to check the
+pin table of the exact part bought, because the TI and Nexperia
+clock and carry naming differs.
 
 ### Clocks
 
@@ -1887,7 +1884,8 @@ which it should be at each count.
   3 February 2016 — Johnson counter, decoded outputs,
   Q0 HIGH after reset, Q5-9 carry, self-correction.
 - TI, CD74HC4017, SCHS200D, Rev. D, November 1997, revised
-  October 2003 — CD ordering table, CP/CE and TC naming.
+  October 2003 — CD ordering table, CP/CE and TC naming; E variant
+  distributor-Active (16-week lead), TI direct out of stock.
 - TI, CD74HC93, SCHS138C, August 1997, revised September
   2003; packaging addendum dated 9 November 2025 —
   CD74HC93E PDIP-14 ACTIVE.
