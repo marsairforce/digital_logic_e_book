@@ -705,8 +705,8 @@ land on an SMT-only listing.
 When the job is simply to divide a clock by a large power of
 two, reach for a long ripple divider. The 74HC4020 is a 14-stage
 binary ripple counter and the 74HC4040 is a 12-stage one
-(Nexperia 74HC4020 Rev. 9, 27 March 2024; 74HC4040 Rev. 4,
-20 March 2014). Both clock on the HIGH-to-LOW transition, both
+(Nexperia 74HC4020 Rev. 9, 27 March 2024; 74HC4040 Rev. 8,
+16 February 2024). Both clock on the HIGH-to-LOW transition, both
 have a single asynchronous master reset, active HIGH, that
 clears every stage and forces all outputs LOW independent of
 the clock, and both count from zero up to 2 to the power of
@@ -737,16 +737,10 @@ rather than as a quoted datasheet line, to roughly 11 + 13 × 6
 4.5 V, CL = 50 pF, the corresponding figures are 14 ns typical,
 28 ns maximum for CP-to-Q0, and 8 ns typical, 15 ns maximum
 per stage, giving a worst-case shape of roughly 28 + 13 × 15
-= 223 ns. The 4040 gives a similar picture: 14 ns typical
+= 223 ns. The 4040 gives a similar picture (Nexperia Rev. 8,
+Table 7): 14 ns typical
 CP-to-Q0 and 8 ns typical per stage at 5 V, CL = 15 pF, for a
 derived CP-to-Q11 of roughly 14 + 11 × 8 = 102 ns typical.
-
-**UNVERIFIED:** the 4040's per-stage figures are 1990
-quick-reference values carried in the Rev. 4 lineage, not a
-freshly extracted Rev. 4 table row, and no current-revision
-4040 dynamic table was cleanly extracted for this chapter; do
-not upgrade those figures to a Rev. 4 table citation without
-re-checking.
 
 At the chapter's clock speeds, 100–200 ns of ripple skew is
 utterly irrelevant to an LED display. The eye cannot see it
@@ -757,24 +751,26 @@ ripple counter: free at human speeds, paid in glitches at
 logic speeds.
 
 Two sourcing and naming cautions belong here, because both
-bite at the ordering stage. First, Nexperia's current ordering
-tables list no DIP for the 4020, and the 4040's DIP listing
-sits in the 2014 Rev. 4 table with no newer revision found, so
-its current Nexperia DIP status is **UNVERIFIED**; the TI
-routes are CD74HC4020E and SN74HC4040N or CD74HC4040E, and the
-current ACTIVE status of the CD74HC4020E was not confirmed
-from a TI product page for this chapter, so it needs a
-drafting-time status check before any "order this" wording.
+bite at the ordering stage. First, Nexperia DIP is gone for
+both parts: the 4040's Rev. 8 and the 4020's Rev. 9 revision
+histories record the removal of the N variants on
+3 February 2016, and the current ordering tables list
+surface-mount only. The TI DIP routes are CD74HC4020E,
+ACTIVE per TI's packaging addendum of 15 July 2026, and
+SN74HC4040N, ACTIVE per TI's packaging addendum of
+8 January 2026.
 Second, the 4000-series originals number their first output
 Q1, while the 74HC4020 and 74HC4040 number it Q0, so a reader
 moving between a CD4020 or CD4040 datasheet and a 74HC4020 or
 74HC4040 datasheet will see output labels shifted by one.
-**UNVERIFIED:** whether TI's CD74HC4020 and CD74HC4040 parts
-are pin-for-pin substitutes for the Nexperia parts — the TI
-datasheets use different output naming, and the SN74HC4040
-uses different clock and reset naming (CLK/CLR) — so do not
-present the TI and Nexperia parts as drop-in substitutes in a
-schematic without a pin-table comparison.
+TI's CD74HC4020 and CD74HC4040 parts are pin-for-pin
+substitutes for the Nexperia parts, with different output
+naming: the CD parts number their outputs from 1, so CD Qn is
+the Nexperia Q(n-1) and the first output is Q1' on pin 9,
+while the SN74HC4040 names its outputs QA–QL for Nexperia
+Q0–Q11, with CLK for CP and CLR for MR. Check the pin table
+of the exact part bought before wiring, because the names
+shift even though the pins do not.
 
 #### Synchronous counters: everyone changes together
 
@@ -1857,9 +1853,9 @@ which it should be at each count.
 - Nexperia, 74HC4020 / 74HCT4020 product data sheet, Rev. 9,
   27 March 2024 — 14 stages, Q0 and Q3–Q13 pinned out,
   derived ripple accumulation.
-- Nexperia, 74HC4040 / 74HCT4040 product data sheet, Rev. 4,
-  20 March 2014 — 12 stages, Q0–Q11 pinned out, Q11 =
-  divide-by-4096.
+- Nexperia, 74HC4040 / 74HCT4040 product data sheet, Rev. 8,
+  16 February 2024 — 12 stages, Q0–Q11 pinned out, Q11 =
+  divide-by-4096, Table 7 dynamic figures.
 - Nexperia, 74HC160 product data sheet, Rev. 4,
   27 March 2019 — decade sequence, asynchronous clear.
 - Nexperia, 74HC161 product data sheet, Rev. 4,
@@ -1892,7 +1888,8 @@ which it should be at each count.
 - TI, CD74HC390, SCHS185E, Rev. E, September 1997, revised
   April 2022 — CD74HC390E PDIP-16 ACTIVE.
 - TI, CD74HC4020, SCHS201C, Rev. C, February 1998, revised
-  October 2003 — CD74HC4020E PDIP-16 ordering.
+  October 2003 — CD74HC4020E PDIP-16 ACTIVE (packaging
+  addendum 15 July 2026).
 - TI, SN74HC4040, SCLS160D, Rev. D, December 1982, revised
   September 2003 — SN74HC4040N PDIP-16 ordering.
 - Nexperia, 74HC14 product data sheet, Rev. 6,
