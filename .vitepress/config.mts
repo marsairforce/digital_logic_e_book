@@ -81,6 +81,10 @@ export default defineConfig({
             text: '7. Sequential logic',
             link: '/chapters/07-sequential-logic',
           },
+          {
+            text: '8. Clocks',
+            link: '/chapters/08-clocks',
+          },
         ],
       },
       {

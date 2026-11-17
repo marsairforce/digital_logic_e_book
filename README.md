@@ -29,6 +29,7 @@ chapter ends with its sources.
 5. [Combinational building blocks](chapters/05-combinational-building-blocks.md)
 6. [Combinational building blocks on the bench](chapters/06-combinational-building-blocks-on-the-bench.md)
 7. [Sequential logic: memory, counters and clocks](chapters/07-sequential-logic.md)
+8. [Clocks: from blinking to timekeeping](chapters/08-clocks.md)
 
 ### Appendices
 
