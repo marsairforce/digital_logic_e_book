@@ -397,10 +397,10 @@ as the delay element.
    change are the point, not the absolute numbers.
 5. **Parts for the race.** 1 × 74HC283 (already owned),
    1 × 74HC00 (already owned from Chapter 2), 1–2 ×
-   **74HC4040N** (Nexperia DIP-16; TI SN74HC4040N is the
-   ACTIVE PDIP equivalent), 1 LED + 1 kΩ for the blink,
-   decoupling capacitors (one per chip). A second 283 for
-   the two-chip race.
+   **SN74HC4040N** (TI PDIP-16, ACTIVE; Nexperia's DIP
+   was removed in 2016, so the TI part is the DIP buy),
+   1 LED + 1 kΩ for the blink, decoupling capacitors
+   (one per chip). A second 283 for the two-chip race.
 
 ## Gotchas
 
