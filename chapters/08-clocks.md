@@ -74,7 +74,8 @@ TI confirmation.
   load capacitance, so note which one you bought
 - 1 x crystal ECS-80-18-4X (ECS, 8 MHz, 18 pF load), optional: the
   workhorse MHz crystal; ECS-80-20-4X (20 pF load) is the alternate,
-  with different load-capacitor values
+  with different load-capacitor values; Abracon ABL-8.000MHZ-B2-T
+  is the same-spec alternate (18 pF load)
 - 1 x crystal ECS-160-20-4X (ECS, 16 MHz, 20 pF load), optional:
   keep the build tight at this frequency; 4 or 8 MHz is the default
   first build
@@ -516,9 +517,12 @@ pulse. That priority was cited to the FAQ only, not read from
 the LM555 datasheet's function table (UNVERIFIED as a
 datasheet citation), but the practical point stands: the 555
 family is not one die, and a substituted LM555 may behave
-differently when the trigger is held low. The LMC555's
-trigger/threshold priority was not checked at all
-(UNVERIFIED). Name the recommended parts — NE555, TLC555 —
+differently when the trigger is held low. The LMC555's trigger/threshold priority is specified: TI
+SNAS558O §7.4.1 states "RESET overrides TRIGGER, which can
+override THRESHOLD", so the LMC555 behaves like the NE555 on
+a held-low trigger, not like the LM555. The same section gives
+minimum pulse durations of 20 ns for TRIGGER and 400 ns for
+RESET. Name the recommended parts — NE555, TLC555 —
 and warn against assuming "a 555 is a 555". One further
 honesty note: the monostable's output state at the instant of
 power-up, before supplies settle, is not specified in the
@@ -558,7 +562,9 @@ Swapping the chip in an otherwise identical 1 Hz build can
 move the frequency by about 1–2% typically, up to 2.25%:
 fixed per chip, removed by trimming, not drift. CMOS: TLC555
 initial error 1% typical, 3% maximum (TI SLFS043I, Aug 1983,
-rev. Jul 2019, §6.7 — UNVERIFIED against SLFS043K §5.8); ICM7555 timing accuracy 2% in each
+rev. Jul 2019, §6.7; TI deleted the initial-error
+specification in Rev. J, SLFS043K §9, so these figures are
+cited to SLFS043I only — never to SLFS043K); ICM7555 timing accuracy 2% in each
 mode (FN2867, single values); LMC555 timing accuracy is
 specified as an absolute time, 1.0 / 1.1 / 1.20 ms at 5 V
 (TI SNAS558J, Feb 2000, rev. Mar 2013), which TI's E2E FAQ
@@ -573,8 +579,14 @@ R2 carries about 98% of the weight in the 1 Hz design, so
 ±5% in R2 moves frequency by ∓4.9% (DERIVED ESTIMATE), while
 ±5% in R1 moves it by only ∓0.11%. Tempco over 10 °C is
 0.05% (DERIVED ESTIMATE), small against every capacitor term.
-No carbon-film tempco was checked (UNVERIFIED); quote no
-number for it.
+Carbon-film tempco is a band, not a number: Yageo's CFR
+series (Product Specification V.3, 3 April 2024, Table 2)
+gives −500 to +350 ppm/°C under 100 kΩ, −700 to 0 ppm/°C
+for 100 kΩ to 1 MΩ, and −1500 to 0 ppm/°C for 1 MΩ to
+10 MΩ. R2 at 150 kΩ sits in the −700 to 0 band, so over a
+10 °C room swing a carbon-film R2 drifts by up to 0.7% —
+fourteen times the metal-film 0.05% — and the sign is not
+fixed. Prefer metal film for timing.
 
 **Film capacitors.** Polyester and polypropylene come in
 ±5%, ±10% and ±20% grades, and the grade is in the part
@@ -587,9 +599,14 @@ ESTIMATES). Polyester's tempco exceeds the NE555 chip's own
 150 ppm/°C: film type matters. KEMET's R82 polyester range
 reaches 4.7 µF, so a 4.7 µF film timing capacitor is real
 and buyable, but physically large beside an
-electrolytic. Availability of a specific 4.7 µF
-polypropylene through-hole part was not checked (UNVERIFIED
-as a buyable item).
+electrolytic. One specific 4.7 µF polypropylene through-hole part is
+verified buyable: WIMA MKP1F044706J00JSSD, 4.7 µF, ±5%,
+250 VDC, radial through-hole (DigiKey 1928-1405-ND, listed
+Active, checked November 2026). It is not a cheap or
+breadboard-friendly default: 39.5 mm tall with 27.5 mm lead
+spacing, it dwarfs the breadboard circuit and needs flying
+leads. Treat it as the proof that the part exists, not as
+the part to order first.
 
 **Ceramic: split by dielectric class, or say nothing.**
 C0G/NP0 (Class I) is stable, with essentially zero voltage
@@ -672,13 +689,16 @@ temperature drift is not specified at all** — TI's E2E
 support states explicitly that "how the frequency moves
 across temperature is not specified in the electrical
 specifications". Its supply sensitivity is 0.1% typical,
-0.5% maximum per volt (TI SLFS043I §6.7, same
-UNVERIFIED-against-K flag as its initial error). Do not claim
+0.5% maximum per volt (TI SLFS043K §5.8). Do not claim
 CMOS temperature superiority: the drift exists, its size is
 simply not specified. LMC555: 75 ppm/°C, 0.3 %/V (SNAS558J).
 ICM7555: 0.5 %/V supply drift (FN2867) and a feature claim
-of 0.005%/°C at +25 °C; its drift-table ppm/°C values did
-not survive text extraction (UNVERIFIED as table values).
+of 0.005%/°C at +25 °C; its drift-table ppm/°C cells are
+blank in the current revision, FN2867 Rev. 10.01 p. 3 — the
+revision prints no drift numbers at all. The 150/200/250
+ppm/°C figures at 5/10/15 V sometimes quoted come from the
+earlier Rev. 1.00 (2016), where they are TYP
+characterisation values only, not tested specifications.
 
 **Worked budgets for the 1 Hz astable (DERIVED ESTIMATES).**
 Worst-case sums add magnitudes (pessimistic, but honest as a
@@ -765,10 +785,14 @@ at power-up. Releasing RESET starts a long first cycle, since
 the capacitor was fully discharged. RESET switching threshold
 (NE555): 0.3 V minimum, 0.7 V typical, 1.0 V maximum (TI
 SLFS022I/K) — below 0.3 V is guaranteed reset, above 1.0 V
-guaranteed out of reset, between is unspecified. TLC555 RESET
-voltage exact values were not extracted from SLFS043K
-(UNVERIFIED); do not print them without a fresh read, and do
-not borrow values from another variant's datasheet. When
+guaranteed out of reset, between is unspecified. TLC555 RESET voltage (TI SLFS043K §5.6 at 5 V, §5.7 at
+15 V): at 25 °C, 0.4 V minimum, 1.1 V typical, 1.5 V maximum,
+all grades; over the full temperature range, 0.3 V minimum
+and 2.0 V maximum for the C grade (1.8 V maximum for the I
+grade) at 5 V. The bench part is the C grade, so 2.0 V is
+the number that matters: below 0.3 V is guaranteed reset,
+above 2.0 V guaranteed out of reset, between is unspecified.
+RESET current is picoamp-class (75 pA maximum, C grade). When
 unused, tie RESET to VCC (TI SLFS022I §8.3.1; ST §4.1 agree).
 A floating RESET pin is a high-impedance node with a roughly
 0.7 V threshold next to switching circuitry; noise can pull
@@ -848,9 +872,9 @@ minimum 4.1 V, typical 4.8 V at −1 mA and 5 V (TI SLFS043I
 rail-to-rail feature line, but the application text states
 the output swing equals the supply voltage "if driving CMOS"
 — explicitly conditioned on CMOS (unloaded) loads — with VOH
-minimum 4.0 V, typical 4.3 V at only 0.8 mA source (FN2867;
-min/typ column assignment inferred from the table layout —
-UNVERIFIED as a min/max assignment). LMC555: no rail-to-rail phrase was found
+minimum 4.0 V, typical 4.3 V at only 0.8 mA source (FN2867
+Rev. 10.01 p. 4, Electrical Specifications — MIN 4.0 V,
+TYP 4.3 V, MAX blank). LMC555: no rail-to-rail phrase was found
 in the material read; what it claims is "Output Fully
 Compatible with TTL and CMOS Logic at 5V Supply", with VOH
 minimum 4.4 V, typical 4.7 V at −2 mA (SNAS558J) — the
@@ -950,12 +974,13 @@ interchangeably.
 
 Variant A — ST divider circuit (ST Doc 2182 Rev. 6 §4.5, Fig.
 21). RA and RB are connected as a divider, in a topology that
-is not the classic astable; copy Fig. 21 exactly. ST gives t1
-(HIGH) = 0.693 x RA x C, and a t2 (LOW) formula involving a
-logarithm of a resistor ratio which did not survive text
-extraction reliably and is NOT reproduced here (UNVERIFIED as
-extracted — read §4.5 from the ST PDF before using t2 or
-frequency quantitatively). ST's example values are RA 51 kΩ,
+is not the classic astable; copy Fig. 21 exactly. ST gives t1 (HIGH) = 0.693 x RA x C, t2 (LOW) =
+[(RA x RB) / (RA + RB)] x C x Ln[(RB − 2 x RA) /
+(2 x RB − RA)], and f = 1 / (t1 + t2) (ST Doc 2182
+Rev. 6 §4.5, read from the PDF; one typesetting caveat:
+ST prints the numerator's first factor faintly, as
+"(R. RB)" — it is unambiguously RA x RB, the parallel
+combination RA‖RB). ST's example values are RA 51 kΩ,
 RB 22 kΩ, with the condition that the circuit will not
 oscillate if RB exceeds half of RA, because the RA/RB
 junction cannot then bring pin 2 down to 1/3 VCC. The
@@ -972,10 +997,10 @@ a rail-to-rail CMOS output: with a bipolar 555, the
 asymmetric HIGH/LOW output drops break the symmetry and the
 duty departs from 50% in a load-dependent way (DERIVED
 consequence of the output-drop analysis above; FN2867
-describes the circuit for the CMOS part only). Whether DISCH
-(pin 7) is used or left unconnected in Fig. 4 could not be
-determined from text extraction (UNVERIFIED — check the
-figure before showing this circuit).
+describes the circuit for the CMOS part only). DISCH (pin 7) is used in Fig. 4: it drives an ALTERNATE
+OUTPUT terminal through a 10 kΩ pull-up to VDD — the
+open-drain discharge transistor as an inverted alternate
+output (FN2867 Rev. 10.01, Fig. 4, read from the PDF).
 
 Variant C — diode across RB (Philips AN170 Fig. 6). A diode
 in parallel with RB, cathode toward the timing capacitor,
@@ -1011,12 +1036,14 @@ dated 26-Feb-2019 — the newest TI addendum found for this
 part is from 2019, and that age is stated here rather than
 smoothed over. ICM7555IPAZ (Renesas, PDIP-8) is the Renesas
 CMOS alternative, listed in FN2867 Rev. 10.01's ordering
-table; LMC555CN/NOPB (TI, PDIP-8) has thin, spotty
+table and Active on Renesas's own product page (checked
+November 2026); LMC555CN/NOPB (TI, PDIP-8) has thin, spotty
 distribution and is not the recommended primary. ST's NE555N
 appears in the 2012 ordering table of Doc 2182 Rev. 6, but
-its current lifecycle status was not checked (UNVERIFIED);
-TI NE555P is the verified sourcing route for a bipolar DIP
-555. Buy branded parts (TI, ST) from authorised distributors:
+that part's current lifecycle status was not checked
+(UNVERIFIED — no manufacturer confirmation of the exact DIP
+code was found); TI NE555P is the verified sourcing route
+for a bipolar DIP 555. Buy branded parts (TI, ST) from authorised distributors:
 the NE555 is one of the most cloned parts in existence, and
 very cheap unbranded chips may not meet TI/ST specifications.
 Treat unbranded kit parts as "verify by measurement" — the
@@ -1424,12 +1451,14 @@ ABL HC-49/US MHz crystal allows 100 µW typical and 1 mW maximum,
 with ESR from 180 Ω to 40 Ω by band. ECS HC-49 MHz crystals list
 500 µW, with ESR 150 Ω at 4 MHz, 80 Ω at 8 MHz and 40 Ω at 16 MHz
 (listing values); IQD's HC49/4H specifies 500 µW maximum.
-**UNVERIFIED:** the 1 µW figure for the ECS watch crystal
-ECS-.327-12.5-13X specifically. The ECS product page and
-distributor listing read for this chapter give no drive level; 1 µW
-is the class value for 2 x 6 mm tuning-fork crystals,
-datasheet-backed for the Abracon AB38T, not an ECS-published
-number for this part. Do not attribute it to ECS. Do not quote
+The 1 µW figure for the ECS watch crystal
+ECS-.327-12.5-13X is ECS-published: the ECS 32.768 kHz
+tuning-fork series sheet (ECS-3X8X, 2X6X, 1X5X), Rev. 2017,
+lists Drive Level (max) 1 µW for the 2X6X column, and the
+sheet's part-numbering guide maps 13X to the 2x6 package, so
+ECS-.327-12.5-13X is the 2X6X column. It is a series sheet,
+not a part-number-specific sheet, but the attribution to this
+part is direct, printed in the same document. Do not quote
 Abracon's typical, 100 µW, as the limit or its maximum, 1 mW, as
 the target. Aim low. At the drive limit, only about 0.1 to 0.3 V
 RMS appears across the crystal's resistive loss (DERIVED
@@ -1557,8 +1586,8 @@ crystal is the cylinder.
 **32.768 kHz: buy.** The primary part is the ECS-.327-12.5-13X:
 32.768 kHz, ±20 ppm, CL 12.5 pF, ESR 35 kΩ, -10 to +60 °C,
 cylindrical can, through-hole (ECS product page and DigiKey
-listing X1124-ND, seen November 2026; the full ECS 2X6X datasheet
-PDF was not read directly). A second verified through-hole source
+listing X1124-ND, seen November 2026; the ECS 2X6X series
+sheet, Rev. 2017, read for the drive-level and ESR figures). A second verified through-hole source
 is the Abracon AB38T-32.768KHZ, 32.768 kHz, ±20 ppm, CL 12.5 pF,
 ESR 30 kΩ max (AB38T/AB26T datasheet, Rev. 1.4.2021), alongside
 the Citizen CFS-20632768DZFB, whose 12.5 pF and 35 kΩ figures are
@@ -1586,10 +1615,12 @@ ECS-80-20-4X (CL 20 pF), HC-49/USX, through-hole, ±30 ppm, ESR 80
 Ω (listing value), both seen in ECS catalog listings. Name one CL
 in a parts list and keep the chapter's load-capacitor arithmetic
 consistent with the pick: the worked example above uses CL 18 pF
-and 27 pF capacitors. **UNVERIFIED:** the specific Abracon
-ABL-8.000MHZ-B2 listing was not individually opened in the
-research for this chapter, so it is not named as an orderable
-number here.
+and 27 pF capacitors. The Abracon alternative is
+ABL-8.000MHZ-B2-T — order the -T (tape-and-reel) variant,
+DigiKey cut-tape 535-ABL-8.000MHZ-B2-TCT-ND; the bare -B2 is
+the bulk variant with identical specs (8 MHz, ±20 ppm,
+CL 18 pF, ESR 80 Ω, HC-49/US, through-hole, listed Active,
+checked November 2026).
 
 **16 MHz: buy, with a breadboard caution.** ECS-160-20-4X,
 HC-49/USX, through-hole, ±30 ppm, CL 20 pF, ESR 40 Ω (listing
@@ -1687,11 +1718,13 @@ and gives **pin numbers plus division ratios every time**, so a
 reader holding a TI chip, whose datasheet labels are one higher,
 still wires to the right pin. A bare Q-number in prose, without
 its pin and its division, is a wiring error waiting to happen.
-**UNVERIFIED:** the §12.2 crystal figure was read only as
-extracted text, never visually; the pin and division map below
-rests on the Rev. 7 body text, cross-checked against TI SCHS207G
-and the onSemi MC74HC4060A/D, Rev. 3 (March 2003), which agree
-on pins and divisions once the naming offset is accounted for.
+The §12.2 crystal figure (Fig. 11 in Rev. 7; Fig. 13 in
+Rev. 6) was read visually from the Rev. 6 PDF, and the pin
+and division map below is confirmed against the Rev. 7 body
+text, TI SCHS207G and the onSemi MC74HC4060A/D, Rev. 3
+(March 2003), which agree on pins and divisions once the
+naming offset is accounted for. Rev. 7 §15 shows §12.2
+unchanged from Rev. 6.
 
 | Pin | Nexperia name (this book) | TI name | Division | From 32.768 kHz |
 |---|---|---|---|---|
@@ -1750,37 +1783,58 @@ and 977 Hz from 16 MHz. The 32 kHz crystal is the only one whose
 The oscillator terminals, in Nexperia names, are RS, pin 11, the
 clock and oscillator input; RTC, pin 10, the external resistor
 connection; and CTC, pin 9, the external capacitor connection.
-TI's SCHS207G labels both pins 9 and 10 with the same symbol,
-which is ambiguous in text, so this book uses the Nexperia names
-or pin numbers in prose. **UNVERIFIED:** TI's oscillator-terminal
-labels need a visual read of the SCHS207G diagram before any
-TI-labelled wiring is printed; the pin numbers above are the
-authority until then.
+TI's SCHS207G labels the three terminals φI (pin 11,
+clock/oscillator input), φO (pin 9, oscillator output) and
+φ̅O (pin 10, inverted oscillator output) — read visually
+from the SCHS207G pinout and Fig. 1. The overbar on pin 10
+is what text extraction drops, which is how the two labels
+came to look identical; visually they differ by the bar. TI
+uses no RS/RTC/CTC names, so this book uses the Nexperia
+names or pin numbers in prose, and no φO/φ̅O to RTC/CTC
+equivalence is asserted — the TI diagram does not map them
+onto RTC/CTC.
 
 What is known reliably about the 4060 crystal circuit, from
-Nexperia Rev. 7 section 12.2 body text: it needs an external bias
-resistor, it needs a power-limiting series resistor R2, for which
-the datasheet states "a practical value for R2 is 2.2 kΩ", and it
-needs load capacitance. That is where reliable knowledge ends. The
-crystal-oscillator figure in section 12.2 was read only as
-extracted text, never visually, and the extraction interleaves the
-RC-oscillator figure, the crystal figure and a test setup. The
-exact topology, which node the crystal connects between, where the
-bias resistor sits, which capacitor is which, is UNVERIFIED from
-that extraction, and the figure's annotation values, a
-bias-resistor range of 100 kΩ to 1 MΩ and a capacitor range of 22
-pF to 37 pF, are garbled-extraction fragments, not design values.
-**No 4060 crystal schematic is printed in this section, for the
-reasons stated in the Pierce subsection above, and no 4060 crystal
-wiring may be reconstructed from the fragments in this paragraph.**
-The figure (Fig. 11 in Rev. 7) must be read visually from
-the Rev. 7 PDF before any schematic is drawn. Note that the bias-resistor range in the
-fragments is far smaller than the discrete Pierce feedback
-resistor, because the 4060's internal amplifier is a different
-design; do not substitute 10 MΩ without checking the figure.
-**UNVERIFIED:** whether the 4060's oscillator section starts a
-32.768 kHz tuning-fork crystal reliably at 5 V. That is an open
-question for a bench test, not a claim this section makes.
+Nexperia Rev. 7 section 12.2 body text and the crystal figure
+(Fig. 11 in Rev. 7; Fig. 13 in Rev. 6), read visually from
+the Rev. 6 PDF: it needs an external bias resistor, it needs
+a power-limiting series resistor R2, for which the datasheet
+states "a practical value for R2 is 2.2 kΩ", and it needs
+load capacitance. The figure's topology is: the crystal
+connects between the RS (pin 11) node and the node below
+R2 — one crystal terminal to RS, the other to the RTC
+(pin 10) side through R2; the bias resistor Rbias (100 kΩ to
+1 MΩ) connects directly between the RS node and the RTC node,
+in parallel with the series combination of crystal plus R2,
+not in series with the crystal; R2 (2.2 kΩ, a fixed value)
+sits between RTC (pin 10) and the crystal's RTC-side
+terminal; C3 (22 pF to 37 pF, drawn as a trimmer) connects
+from the RS-side crystal node to ground; C2 (100 pF, fixed)
+connects from the RTC-side crystal node, the bottom of R2,
+to ground. The 22–37 pF range belongs to C3 only — do not
+apply it to C2. (The RC-oscillator figure in the same
+section also labels components R2 and C2 — different
+components from this figure's R2 and C2; do not conflate
+them.) **No 4060 crystal schematic is printed in this
+section yet: the topology and values above are verified,
+but whether this circuit starts a 32.768 kHz tuning-fork
+crystal reliably at 5 V is still an open bench question
+(see below), and no schematic is drawn until that is
+settled.** Note that the bias-resistor range is far smaller
+than the discrete Pierce feedback resistor, because the
+4060's internal amplifier is a different design; do not
+substitute 10 MΩ.
+Whether the 4060's oscillator section starts a 32.768 kHz
+tuning-fork crystal reliably at 5 V is still UNVERIFIED —
+an open question for a bench test, not a claim this section
+makes. The figure is a generic circuit, not a validated
+watch-crystal design: C3 (22–37 pF) in series with C2
+(100 pF) gives about 18–27 pF of load against the ECS
+crystal's 12.5 pF, and R2 at 2.2 kΩ is about 45 times
+smaller than the HCU04 table's 100 kΩ series resistor for
+the same frequency. The bench test is of the exact circuit —
+4060, ECS watch crystal, Fig. 11 parts, at 5 V — checking
+cold start and output frequency.
 
 One verified mode needs no figure. The oscillator may be replaced
 by an external clock signal at RS, pin 11, keeping the other
@@ -1847,19 +1901,28 @@ stability, -20 to +70 °C. Several ACH listings showed zero
 distributor stock with manufacturer lead time applying, snapshots,
 not promises; the series is current but not deep-stocked.
 
-**UNVERIFIED: no oscillator-module wiring is printed in this
-section.** The ACH datasheet PDF, pin function table, enable-pin
-behaviour, supply current, output levels, decoupling requirement
-and start-up time, was not read for this chapter. The conventional
-half-can pinout is therefore deliberately not printed here:
-enable-pin variants exist, some modules have no enable pin, some
-require it tied HIGH, and floating it is unsafe to assume. The
-"HCMOS/TTL" listing wording suggests 5 V HC-compatible levels, but
-VOH and VOL must be confirmed from the datasheet before any claim
-that the output drives HC logic, the same lesson Chapter 7 teaches
-about the NE555 output. Read the datasheet of whichever module is
-named, and draw the wiring from its pin table, before including
-any module schematic or wiring list.
+The ACH datasheet has now been read (Abracon ACH series,
+revised 11 November 2016), and the wiring for the chapter's
+named example, ACH-8.000MHZ-EK, is: pin 8 to +5 V; pin 4 to
+ground (this pin is also the metal case connection); pin 5,
+the output, direct to the HC clock input; pin 1 left
+unconnected — on the standard part it is NC. On "-A"
+(tristate) variants only, pin 1 is the enable: tie it HIGH
+(≥ 2.2 V) or leave it floating — the datasheet's tristate
+table lists "1" or Open as oscillation — and pulling it LOW
+(< 0.8 V) puts the output in high impedance. The output
+drives HC logic directly: VOH ≥ 0.9 × Vdd, VOL ≤ 0.1 × Vdd,
+so at 5 V that is VOH ≥ 4.5 V, VOL ≤ 0.5 V, into a 15 pF /
+10 TTL load; input current is 30 mA maximum below 24 MHz;
+start-up time is 1–10 ms; the output enable time is 4 ms
+and disable time 100 ns (tristate variants only). No
+decoupling requirement is stated in the datasheet: a supply
+bypass capacitor is good practice, not a datasheet
+requirement. Do NOT wire the module across an inverter as if
+it were a crystal: it needs power on pins 8 and 4. The
+ordering-code parse in the sourcing paragraph above is
+confirmed by the sheet's ordering options: -E is −20 to
++70 °C, -K is ±30 ppm maximum.
 
 One identification rule prevents the commonest module mistake. A
 "crystal" listing with four pins is not a crystal; it is a module,
@@ -2013,11 +2076,13 @@ ACTIVE per TI's packaging addendum of 8 January 2026, as
 Chapter 7 states. Nexperia DIP is gone: the Rev. 8
 revision history records the removal of the N variants
 on 3 February 2016, and the ordering table lists
-surface-mount only. **UNVERIFIED:** the CD74HC4040E's
-current ACTIVE status, only a 2009 addendum having been
-seen, so this book recommends the SN part and makes no
-claim for the CD part. One description sentence in the
-CD datasheet (TI CD74HC4040, SCHS203D) states the wrong
+surface-mount only. CD74HC4040E in PDIP-16 is ACTIVE per
+TI's packaging addendum of 20 October 2026, so the CD part
+is a verified second DIP route — but this book still
+recommends the SN part as the bench buy, as Chapter 7
+states. One description sentence in the
+CD datasheet (TI CD74HC4040, SCHS203E, November 1998 –
+July 2022) states the wrong
 number of stages, a copy/paste slip from the 4020 sheet
 in the same family; the title, the functional diagram,
 and the twelve outputs all say twelve, and twelve is
@@ -2051,11 +2116,16 @@ CD74HC4020, SCHS201C, February 1998, revised October
 2003). The bench route is CD74HC4020E in PDIP-16,
 ACTIVE per TI's packaging addendum of 15 July 2026, as
 Chapter 7 states; Nexperia DIP was removed on
-3 February 2016, as for the 4040. **UNVERIFIED** (not
-load-bearing): whether the TI first output Q1' differs
-in phase or polarity from the Nexperia Q0. No wiring
-here depends on it, and no phase relationship is
-asserted.
+3 February 2016, as for the 4040. The TI first output Q1'
+is identical in phase and polarity to the Nexperia Q0: both
+are the buffered, non-inverted divide-by-2 output of the
+first toggle stage, going HIGH after the first falling clock
+edge and LOW on reset (TI SCHS203E §7.1, §7.3 and Fig. 7-1:
+each stage's Q drives its output pin through two inverters
+in series; MR HIGH forces all outputs LOW). The difference
+is naming and numbering only — TI numbers the stages 1–12
+(Q1'–Q12'), Nexperia 0–11 (Q0–Q11) — and the prime is part
+of TI's 1-based output naming, not an inversion marker.
 
 The 74HC390 packs two independent decade counters into
 one 16-pin package (Nexperia 74HC390, Rev. 6, 19 March
@@ -2242,10 +2312,12 @@ pulse at high frequency approaches the next stage's
 minimum pulse width. At human-visible rates neither
 bites, but do not describe a 390 BCD output or a 4017 Q
 output as a square wave. Nexperia's datasheet says Q5-9
-can drive the next counter's clock input.
-**UNVERIFIED:** whether TI's pin-12 output on its 4017
-matches Nexperia's Q5-9 waveform; this book does not
-assert the equivalence.
+can drive the next counter's clock input. TI's pin-12
+output (TC) matches Nexperia's Q5-9 waveform exactly: both
+are HIGH during states 0–4, LOW during states 5–9, rising
+at the 9-to-0 wrap (Nexperia 74HC4017 Rev. 8 §1; TI
+SCHS200D truth-table footnote, "If n < 5 TC = H,
+Otherwise = L").
 
 #### The ladders you can check with your eyes
 
@@ -2329,7 +2401,7 @@ a 50 pF load.
 | Chain | Typical | Worst-case shape | Derivation |
 |---|---|---|---|
 | 4040, CP to Q11 (Nexperia Rev. 8) | 102 ns | 250 ns | 14 + 11 × 8; 30 + 11 × 20 |
-| 4040, CP to Q12 (TI CD, SCHS203D) | 55 ns | 193 ns | 11 + 11 × 4; 28 + 11 × 15 |
+| 4040, CP to Q12 (TI CD, SCHS203E) | 55 ns | 193 ns | 11 + 11 × 4; 28 + 11 × 15 |
 | 4020, CP to Q13 (Nexperia Rev. 9) | 89 ns | 223 ns | 11 + 13 × 6; 28 + 13 × 15 |
 | 4060, φI to Q13 (TI, SCHS207G) | 85 ns | 220 ns | 25 + 10 × 6; 60 + 10 × 16 |
 | 390, one decade, BCD (TI, SCHS185E) | — | 73 ns max | CLKA to QD, specified figure |
@@ -2405,12 +2477,21 @@ that must both be HIGH for it to count, and each
 stage's carry output — HIGH when the count is at
 maximum and the feed-forward enable is HIGH — enables
 the next stage. The carry chain decides which stages
-advance; the shared clock decides when. **UNVERIFIED:**
-the exact pin-to-pin cascade wiring recipe was not
-extracted from the datasheet application figure, so no
-161/163 cascade diagram is printed in this book. The
-principle above is verified; the wiring recipe is not,
-and the 390 route covers this chapter's decimal work.
+advance; the shared clock decides when. The pin-to-pin
+cascade recipe is TI SCLS298D Rev. D, Figure 2, and
+Nexperia Rev. 5 §1 agrees in prose: all stages share one
+clock; CLR and LOAD are common to all stages; the lowest
+stage has both ENT and ENP tied to the common Count line;
+each higher stage's ENT is driven by the previous stage's
+RCO, and its ENP is tied to the common Count line. In
+Nexperia naming: the lower stage's TC drives the upper
+stage's CET, and the upper stage's CEP is tied HIGH. TI
+warns that the Figure 2 circuit is not valid above 18 MHz
+at 25 °C and 4.5 V, because of an RCO glitch on the second
+and succeeding stages. No 161/163 cascade diagram is
+printed in this book — the recipe above is the verified
+wiring in prose — and the 390 route covers this chapter's
+decimal work.
 Do not treat the 161 and 163 as interchangeable: the
 161's clear is asynchronous, the 163's is synchronous,
 taking effect on the next clock edge. And the decade
@@ -2764,8 +2845,8 @@ wide range, worst-case datasheet figures:
 | Epson TG-3541CE, grade XA | ±1.9 / ±3.4 ppm | Included | 0–50 / −40–85 °C | Not stated |
 
 (Abracon ASTX-H12, revised 13 May 2015; ECS ECS-TXO-3225
-datasheet — **UNVERIFIED** as to revision, no revision
-date visible in the copy read; Epson TG2016/2520SMN,
+datasheet — undated as published, no revision number or date
+appears in the document; Epson TG2016/2520SMN,
 Spec No. TG2016/2520SMN_EN_ver.2.0, Ver. 2.0; Epson
 TG-3541CE, 2020, no specification number visible in the
 copy read.) Read the table with care. The Epson
@@ -2963,8 +3044,26 @@ than "none exist": exactly one through-hole TCXO module
 was found, the Maxim DS32KHZ in a 14-pin DIP (Maxim
 DS32kHz data sheet, Rev. 071521), specified at ±2 ppm
 from 0 to +40 °C and ±7.5 ppm over its full range, with
-constrained availability. Its pinout is
-**UNVERIFIED**, and no pinout is printed here. That
+constrained availability. Its pinout is verified (Maxim DS32kHz data sheet,
+Rev. 071521, PIN DESCRIPTION table p. 5 and Figure 4;
+pin-configuration diagram visually cross-checked against
+Rev. 080607 p. 1):
+
+| DIP pin | Function |
+|---|---|
+| 1, 6–11, 14 | N.C. — no connection, must be grounded |
+| 2, 3 | No label in the diagram — unpopulated by design |
+| 4 | GND |
+| 5 | VBAT, +3 V nominal (2.7–5.5 V) |
+| 12 | 32kHz output, 32.768 kHz push-pull |
+| 13 | VCC, primary supply (4.5–5.5 V) |
+
+The device requires four pins for operation: VCC, GND, VBAT
+and 32kHz. Electrical figures: ICC 150 µA typical /
+220 µA maximum (VBAT 2.7–3.5 V); VOH 2.4 V minimum at
+−1.0 mA; VOL 0.4 V maximum at 2.1 mA; oscillator start-up
+1 s maximum (15 pF load). Do not use the older Rev. 041603
+pinout — it differs. That
 single constrained part against a whole surface-mount
 catalogue is the measure of how far the TCXO has moved
 from the breadboard. Cost, by contrast, is not the
@@ -3422,11 +3521,12 @@ oscilloscope with specialised probes, and probing the crystal
 nodes with ordinary leads stops the oscillator or pulls its
 frequency. The theory section quantifies the trap; the build
 facts are these. The tuning-fork limit is 1 µW maximum (Abracon
-AB38T/AB26T datasheet, Rev. 1.4.2021); the drive level for the
-ECS ECS-.327-12.5-13X part itself was not published on the
-product page or listing read, and is UNVERIFIED for that exact
-part, so the 1 µW figure is the class value for 2 x 6 mm
-tuning-fork crystals, not an ECS-published number for this part.
+AB38T/AB26T datasheet, Rev. 1.4.2021); the same 1 µW maximum
+is ECS-published for the ECS ECS-.327-12.5-13X part itself,
+in the ECS 32.768 kHz tuning-fork series sheet
+(ECS-3X8X, 2X6X, 1X5X), Rev. 2017, Drive Level (max) for
+the 2X6X column — the sheet's part-numbering guide maps
+13X to the 2x6 package.
 The MHz limits are far larger — the Abracon ABL series allows
 100 µW typical and 1 mW maximum, a thousand times the
 tuning-fork limit. A 5 V HCU04 driving a watch crystal with no
@@ -3985,8 +4085,14 @@ charging-circuit trap on top.
 - Renesas, ICM7555/7556, FN2867, Rev. 10.01 (5 March 2020) —
   CMOS comparison, supply-current spikes, output-feedback
   50%-duty circuit.
+- Renesas, ICM7555/7556, FN2867, Rev. 1.00 (28 June 2016) —
+  drift-with-temperature values (TYP, characterisation only),
+  cited only where Rev. 10.01 prints none.
 - TI, LMC555, SNAS558J (February 2000, rev. March 2013) — VOH
   numbers, drift figures.
+- TI, LMC555, SNAS558O (January 2000, rev. November 2026) —
+  trigger/threshold/reset priority and minimum pulse
+  durations (§7.4.1).
 - Philips, AN170 (December 1988) — 555 applications: five-block
   description, resistor limits, diode 50%-duty topology,
   mid-1972 introduction.
@@ -3996,8 +4102,14 @@ charging-circuit trap on top.
   temperature coefficient.
 - KEMET, A72 polypropylene film, F3039_A72 (27 July 2015) —
   temperature coefficient.
+- WIMA, MKP 10 series, MKP1F044706J00JSSD (4.7 µF, ±5%,
+  250 VDC, radial through-hole) — DigiKey 1928-1405-ND,
+  listed Active (checked November 2026).
 - Vishay, MRS25 metal film, Doc. 28724 (rev. 17 August 2011) —
   tolerance, temperature coefficient.
+- Yageo, CFR series carbon-film resistors, Product
+  Specification V.3 (3 April 2024), Table 2 — temperature
+  coefficient by resistance band.
 - Nichicon, CAT.8100J — UVZ/PJ electrolytic tolerance and
   leakage specification.
 - Murata, MLCC specifications; Analog Devices tutorial (2012) —
@@ -4013,8 +4125,9 @@ charging-circuit trap on top.
 - Nexperia, 74HC4060/74HCT4060 product data sheet, Rev. 7
   (27 March 2024) — outputs, terminals, pins, ordering,
   section 12.2 body text; Rev. 6 cross-checked. The section
-  12.2 crystal figure (Fig. 11) was read only as extracted
-  text, never visually.
+  12.2 crystal figure (Fig. 11 in Rev. 7; Fig. 13 in Rev. 6)
+  was read visually from the Rev. 6 PDF; Rev. 7 §15 shows
+  §12.2 unchanged from Rev. 6.
 - TI, CD54/74HC4060 and CD54/74HCT4060, SCHS207G (February
   1998, rev. October 2003) — pinout, PDIP ordering,
   counter/reset behaviour; CD74HC4060E packaging addendum
@@ -4028,8 +4141,8 @@ charging-circuit trap on top.
 - TI, SN74HC4040, SCLS160D (September 2003) and SCLS160E,
   Rev. E (March 2022) — pin-for-pin equivalence, QA–QL/CLK/CLR
   naming.
-- TI, CD74HC4040, SCHS203D (February 1998, rev. October
-  2003) — pinout, switching figures; the description sentence
+- TI, CD74HC4040, SCHS203E (November 1998, rev. July
+  2022) — pinout, switching figures; the description sentence
   carrying the wrong stage count is not quoted.
 - Nexperia, 74HC4020 product data sheet, Rev. 9 (27 March
   2024) — pins, dynamics table, ordering.
@@ -4107,25 +4220,30 @@ charging-circuit trap on top.
 - IQD, HC49/4H specification, Issue 15 (September 2019) —
   range, load capacitance, C0, drive, ESR. Distributor-hosted
   PDF extract.
-- ECS, product pages and distributor listings (seen November
-  2026) — ECS-.327-12.5-13X, ECS-40-20-4X, ECS-80-18-4X,
-  ECS-80-20-4X, ECS-160-20-4X; HC-49U/HC-49US datasheets
-  (ECS-200 series). Individual ECS datasheet PDFs not read;
-  listing values flagged in the text.
+- ECS, 32.768 kHz tuning-fork crystal series sheet
+  (ECS-3X8X, 2X6X, 1X5X), Rev. 2017 — drive level 1 µW
+  maximum, ESR 35 kΩ maximum (2X6X column), part-numbering
+  guide (13X = 2x6); product pages and distributor listings
+  (seen November 2026) — ECS-.327-12.5-13X, ECS-40-20-4X,
+  ECS-80-18-4X, ECS-80-20-4X, ECS-160-20-4X; HC-49U/HC-49US
+  datasheets (ECS-200 series). Individual ECS datasheet PDFs
+  not read except the tuning-fork series sheet; listing values
+  flagged in the text.
 - ECS, drawing DWG NO. ECS-10-13-1H (drawn 24 November 1998) —
   1 MHz crystal: tolerance, stability, load capacitance, ESR,
   drive. Mouser extract.
 - Citizen, CFS-20632768DZFB — distributor-reported
   specifications only; Citizen datasheet not read.
-- Abracon, ACH series — distributor listings only; ACH
-  datasheet PDF not read. Pinout, enable and levels
-  UNVERIFIED.
+- Abracon, ACH series datasheet (revised 11 November 2016) —
+  pin function table, tristate enable, supply current,
+  output levels, start-up time; distributor listings (seen
+  November 2026) for the ACH-8.000MHZ-EK example.
 - Abracon, ASTX-H12 datasheet (revised 13 May 2015) — TCXO
   tolerance, temperature stability, supply/load sensitivity,
   ageing, supply and output levels.
-- ECS, ECS-TXO-3225 datasheet (no revision date visible in
-  the copy read — UNVERIFIED as to revision) — TCXO tolerance,
-  temperature stability, ageing.
+- ECS, ECS-TXO-3225 datasheet (undated as published — no
+  revision number or date appears in the document) — TCXO
+  tolerance, temperature stability, ageing.
 - Epson, TG2016/2520SMN data sheet, Spec No.
   TG2016/2520SMN_EN_ver.2.0, Ver. 2.0 — temperature stability
   grades, before/after-reflow tolerance, ageing, clipped-sine
@@ -4137,7 +4255,9 @@ charging-circuit trap on top.
   accuracy, crystal inside the package, ageing, temperature
   sensor, conversion interval, supply range, package.
 - Maxim, DS32kHz data sheet, Rev. 071521 — accuracy figures,
-  14-pin DIP; pinout UNVERIFIED.
+  14-pin DIP pinout (PIN DESCRIPTION table p. 5, Figure 4);
+  pin-configuration diagram visually cross-checked against
+  Rev. 080607 p. 1.
 - ECS, David Meaney, "Unlocking Precision: Exploring the
   Advancements in TCXO Technology" (22 April 2024, updated
   16 August 2024) — TCXO definition, analogue versus digital
