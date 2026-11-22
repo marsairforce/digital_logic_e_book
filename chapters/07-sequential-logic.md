@@ -254,10 +254,15 @@ same wording as the Nexperia-era Philips table). One sourcing
 note matters for the bench: the Nexperia Q100 ordering is
 surface-mount only, so the breadboard route is TI's SN74HC74N
 in PDIP 14, listed in TI Rev. F device information. Distributor
-stock was not re-checked for this chapter. UNVERIFIED: the TI
-Rev. F timing table was not checked for this chapter, so the
-74HC74 timing figures in the next section are Nexperia Q100
-figures, not TI figures.
+stock was not re-checked for this chapter. The TI Rev. F timing
+table has been checked (TI SCLS094F Rev. F, Dec 1982, rev. Jun
+2021, §6.7 and §6.9, at 4.5 V): setup 20 ns minimum at 25 °C
+and 25 ns minimum over −40 to +85 °C, hold 0 ns, f_clock
+31 MHz minimum at 25 °C and 25 MHz minimum over temperature,
+preset/clear recovery 5 ns at 25 °C and 6 ns over temperature,
+clock-to-Q 20 ns typical and 35 ns maximum at 25 °C (44 ns
+maximum over temperature). TI's setup figure is the stricter
+one, so the table below carries a TI row for the 74.
 
 The JK flip-flop is the D flip-flop's more flexible cousin. On its
 active clock edge, J = 1, K = 0 sets Q HIGH; J = 0, K = 1 resets
@@ -281,10 +286,10 @@ the whole JK family: its power pins are not on the usual corners.
 VCC is pin 4 and GND is pin 11 (Rev. 8, pinout diagram), not pins
 14 and 7. Any schematic copied from a part-number list alone will
 wire it wrong; draw the 73 from its datasheet. A further caution:
-Nexperia Rev. 8 ordering lists SO14 and TSSOP14 only, and a DIP
-74HC73 from TI was not verified for this chapter, so this chapter
-does not promise a DIP 74HC73. UNVERIFIED: DIP availability of the
-74HC73.
+Nexperia Rev. 8 ordering lists SO14 and TSSOP14 only, but TI
+sells the DIP: CD74HC73E in PDIP-14, listed ACTIVE in the
+SCHS134G Rev. G package addendum (18 September 2026). There
+is no SN74HC73, so CD74HC73E is the DIP route.
 
 The 74HC107 is functionally identical to the 73 — dual JK,
 negative-edge-triggered, reset only, asynchronous and active-LOW
@@ -294,9 +299,8 @@ therefore not interchangeable pin-for-pin, even though they do
 the same logic. The 107's pinout puts power on the standard
 corners, GND on pin 7 and VCC on pin 14, and its clock inputs
 have hysteresis for improved noise immunity. Its PDIP ordering is
-CD74HC107E, but the E variant's current status was not re-checked
-for this chapter, so check before recommending it as a buy.
-UNVERIFIED: current status of CD74HC107E.
+CD74HC107E, listed ACTIVE in the SCHS139D package addendum
+(23 October 2026).
 
 The 74HC112 is a dual JK, negative-edge-triggered, with both
 preset and clear (TI SNx4HC112 Rev. I). It follows the standard
@@ -392,6 +396,7 @@ this section tells you which one to use.
 |---|---|---|
 | 74HC75 latch, D to LE (Nexperia Rev. 4) | 15 ns | 3 ns |
 | 74HC74 (Nexperia 74HC74-Q100 Rev. 5) | 15 ns (18 ns over −40 to +125 °C) | 3 ns |
+| 74HC74 (TI SNx4HC74 Rev. F) | 25 ns (20 ns at 25 °C) | 0 ns |
 | 74HC73 (Nexperia Rev. 8) | 16 ns (20 ns over −40 to +85 °C) | 3 ns |
 | 74HC107 (TI CD74HC107 Rev. D) | 20 ns (25 ns over −40 to +85 °C) | 3 ns |
 | 74HC109 (Nexperia Rev. 6) | 14 ns (18 ns over −40 to +85 °C) | 5 ns |
@@ -419,14 +424,16 @@ simple and non-negotiable: use the datasheet of the exact chip
 in your hand, and if you do not know which vendor's chip you
 have, use the largest (worst) number in the table. For the 109
 that means designing to 20 ns setup and 5 ns hold; for the 112
-it means 25 ns setup.
+it means 25 ns setup; for the 74 it means 25 ns setup and
+3 ns hold.
 
 A related timing figure belongs alongside setup and hold:
 recovery, the time an asynchronous input must be released before
 the next clock edge, or the clock may be ignored or the state
 may be wrong. Minimum recovery at 4.5 V: 74HC74-Q100, preset or
-clear to clock, 8 ns (Nexperia Rev. 5); 74HC73, reset to clock,
-16 ns (Nexperia Rev. 8); 74HC107, reset to clock, 12 ns (TI
+clear to clock, 8 ns (Nexperia Rev. 5); TI Rev. F gives 5 ns at
+25 °C and 6 ns over −40 to +85 °C for the same input;
+74HC73, reset to clock, 16 ns (Nexperia Rev. 8); 74HC107, reset to clock, 12 ns (TI
 Rev. D); 74HC109, preset or clear to clock, 14 ns (Nexperia
 Rev. 6); 74HC112, TI Rev. I expresses it as a setup requirement
 — preset and clear inactive 25 ns before the falling clock edge
@@ -533,7 +540,7 @@ The 74HC165 is the mirror image of the 164: parallel in, serial out (Nexperia Re
 
 The 74HC194 is the teaching part of the set, and the only four-bit part here: a bidirectional universal shift register (Nexperia Rev. 4, 16 March 2021). Two mode pins, S0 on pin 9 and S1 on pin 10, select one of four things to do on the rising CP edge, pin 11, and the part has parallel inputs D0 to D3 on pins 3 to 6, parallel outputs Q0 to Q3 on pins 15 down to 12, and two serial inputs, DSR on pin 2 for shifting right and DSL on pin 7 for shifting left. Following the Rev. 4 function table, which is the authority for this part for the reason given below, both mode pins LOW means HOLD, with the register keeping its value and the clock ignored; S1 LOW and S0 HIGH means SHIFT RIGHT, with serial data entering at DSR and bits moving toward Q3; S1 HIGH and S0 LOW means SHIFT LEFT, with serial data entering at DSL and bits moving toward Q0; and both mode pins HIGH means PARALLEL LOAD, with D0 to D3 transferred to Q0 to Q3 on the rising clock edge. Direction is best defined by that pin movement, toward Q3 or toward Q0, and by which serial pin feeds it, rather than by the words left and right alone, because textbooks do not all draw Q0 on the same side. Note also that the 194's parallel load is synchronous: unlike the 165's asynchronous PL, it waits for a clock edge, and contrasting those two load styles, together with the 595's latch below, is the conceptual core of this section. The 194's clear, MR on pin 1, is active LOW and asynchronous, overriding all other inputs and forcing all outputs LOW, and it must be held HIGH normally. It has no output latch, no output enable and no 3-state outputs, and its outputs are standard outputs characterised at 4 mA at 4.5 V with a 50 mA package limit. For cascading, the previous chip's Q3 feeds the next chip's DSR for a shift-right chain, and the previous chip's Q0 feeds the next chip's DSL for a shift-left chain. Four bits is narrow on purpose: the 194 is here to teach bidirectionality and mode control, not to build a wide register from, and for eight bits the reader chains two 194s or picks a 164, 165 or 595 according to direction.
 
-A caveat on the 194 must be carried in the text, not smoothed over. Nexperia Rev. 4 contradicts itself on this part: its section 1 prose pairs S0 HIGH with DSL and S1 HIGH with DSR, while its section 6 function table pairs them the other way round, with shift-left using DSL and shift-right using DSR, which also matches the classic 74194 convention. This draft follows the function table, because the table is internally consistent, with DSL feeding the shift-left row and DSR feeding the shift-right row. UNVERIFIED: that choice should still be confirmed on the bench, with one chip, LEDs and one known bit, before the mode table is treated as settled, and the bench check should confirm direction by pin movement rather than by the words left and right.
+A caveat on the 194 must be carried in the text, not smoothed over. Nexperia Rev. 4 contradicts itself on this part: its section 1 prose pairs S0 HIGH with DSL and S1 HIGH with DSR, while its section 6 function table pairs them the other way round, with shift-left using DSL and shift-right using DSR, which also matches the classic 74194 convention. This draft follows the function table, because the table is internally consistent, with DSL feeding the shift-left row and DSR feeding the shift-right row. TI's CD74HC194 truth table (SCHS164G, Sep 1997, rev. May 2006) agrees with Nexperia's function table exactly — shift left S1 HIGH, S0 LOW, serial in at DSL; shift right S1 LOW, S0 HIGH, serial in at DSR; parallel load S1 and S0 HIGH — so the choice now rests on two manufacturers' agreement, not on one table alone. A bench check with one chip, LEDs and one known bit is still the way to settle it on hardware, and it should confirm direction by pin movement rather than by the words left and right.
 
 #### The 74HC595 as the LED driver's friend
 
@@ -545,7 +552,7 @@ The pin traps on the 595 deserve the same plain treatment, because they are all 
 
 Now the drive trap, stated plainly, because it is the number most often got wrong about this part. The 595's Q0 to Q7 outputs are bus-driver outputs, with VOH and VOL characterised at 6 mA at 4.5 V (Nexperia Rev. 9, section 10). The absolute-maximum output current is 35 mA per Qn pin, with 25 mA for Q7S, and the VCC and GND current limit for the package is 70 mA (Rev. 9, section 8). The 35 mA figure is a damage limit, not a drive rating, and the frequently repeated claim that the 595 can drive 35 mA per pin is wrong as design guidance. The honest design figure is the 6 mA characterisation. The package arithmetic follows from the 70 mA limit and is worth doing out loud: eight LEDs at the characterised 6 mA total 48 mA through VCC and GND, inside the 70 mA limit, while eight LEDs at 20 mA each total 160 mA, more than double the package limit, and must not be presented as a working design, even though no single pin exceeds 35 mA. If bright 20 mA LEDs are wanted, a driver stage after the 595 is needed, and that driver design is follow-up work, not specified here. A series resistor per LED is still required in any case, because the 595 is a logic output, not a constant-current driver, and nothing in Rev. 9 specifies LED current limiting. UNVERIFIED: no specific LED part or forward voltage was checked for this section, so any worked resistor value must be labelled with the LED forward voltage it assumed, and that value must come from the LED's own datasheet, not from the 595's.
 
-Two further cautions belong with this section as a whole. The first is power-up state. UNVERIFIED: none of the seven datasheets checked states a guaranteed power-up output value, so this section must not claim that any of these parts powers up at zero, or at any other value. The bench-safe procedure is to pulse the clear on the 273, 164, 194 and the 595's shift register, or to clock in a known byte on the 374, 574 and 165, after power-up, before trusting the display. The second is sourcing. UNVERIFIED: every Nexperia ordering table checked for this section lists only surface-mount packages, and no through-hole ordering code for any of the seven parts appears in those documents, so whether a through-hole variant of each part is currently sold by another vendor was not checked here and must not be asserted. Until a follow-up checks distributor stock and a datasheet per part, this section must not promise the reader a through-hole 273, 374, 574, 164, 165, 194 or 595; the honest interim wording is that the Nexperia documents checked are surface-mount only, and the reader would need either a through-hole variant from another vendor, to be specified after checking, or a surface-mount-to-through-hole carrier board. That flag bites any parts list drawn from this section directly.
+Two further cautions belong with this section as a whole. The first is power-up state. None of the seven Nexperia datasheets checked states a guaranteed power-up output value, and neither do the seven TI CD equivalents checked (SCHS174D, SCHS183E, SCHS155E, SCHS156D, SCHS164G, SCHS353A), so this section must not claim that any of these parts powers up at zero, or at any other value. The bench-safe procedure is to pulse the clear on the 273, 164, 194 and the 595's shift register, or to clock in a known byte on the 374, 574 and 165, after power-up, before trusting the display. The second is sourcing. The Nexperia ordering tables checked for this section list only surface-mount packages, but TI sells PDIP versions of six of the seven: CD74HC273E, CD74HC374E, CD74HC574E, CD74HC164E, CD74HC194E and CD74HC595E, all listed ACTIVE in their package addenda (18 September 2026; the 595's addendum is 10 August 2026). The exception is the 165: CD74HC165E is Last Time Buy (addendum 23 October 2026), so do not promise a TI PDIP 165. Stock is a snapshot, not a promise — re-check before ordering. That flag bites any parts list drawn from this section directly.
 
 ### Counters
 
@@ -642,11 +649,15 @@ delay of 12 ns typical for the HC part at VCC = 5 V, CL = 15 pF,
 typical values from a 1990 document, not maxima from a current
 revision, and the chapter quotes them as such.
 
-**UNVERIFIED:** a single clean "CP-to-Q3, worst case, at 5 V"
-figure for the 93 in a current Nexperia revision was not
-retrieved, so this section illustrates ripple accumulation with
-the 4020 and 4040 numbers below, which come from current
-revisions, rather than quoting a 93 total from the 1990 table.
+The clean worst-case figure for the ripple chain is CP1-to-Q3
+at 4.5 V: 29 ns typical, 49 ns maximum at 25 °C, 61 ns maximum
+over −40 °C to +85 °C (Philips IC06, December 1990; TI
+CD74HC93 SCHS138D Rev. D, Nov 1998, rev. Mar 2022, §5.6
+agrees on the maxima). No datasheet tabulates a 5.0 V
+maximum, so the 4.5 V figure is the design number, and this
+section illustrates ripple accumulation with the 4020 and
+4040 numbers below, which come from current revisions, rather
+than quoting a 93 total from the 1990 table alone.
 
 ##### 74HC390: one package, two decades, two wirings
 
@@ -800,13 +811,14 @@ exactly two dimensions: count sequence and clear timing.
 | 74HC161 | Binary: 0–15, then 0 | Asynchronous, active LOW (MR/CLR) |
 | 74HC163 | Binary: 0–15, then 0 | Synchronous, active LOW (CLR) |
 
-The sources are Nexperia Rev. 4 for each part: the 160
+The sources are Nexperia Rev. 4 for the 160 and 161, and Rev. 5
+for the 163: the 160
 (27 March 2019) states that a LOW at MR "sets Q0 to Q3 LOW
 regardless of the levels at input pins CP, PE, CET and CEP
 (thus providing an asynchronous clear function)"; the 161
 (4 October 2018) carries the same asynchronous wording, and TI
 agrees (SCLS297D: "The clear function for the 'HC161 devices
-is asynchronous"); the 163 (28 December 2015) is titled as a
+is asynchronous"); the 163 (12 October 2018) is titled as a
 synchronous-reset part, and TI agrees (SCLS298D: "The clear
 function for the 'HC163 devices is synchronous. A low level
 at the clear (CLR) input sets all four of the flip-flop
@@ -836,11 +848,18 @@ will see it with the naked eye: hold CLR LOW on a 163 and a
 at once while the 163 waits for the next tick. No instrument
 is needed, and none is claimed.
 
-**UNVERIFIED:** the exact clear-versus-load priority for the
-163 — if CLR and LOAD are both asserted at the same clock
-edge, which wins — was not extracted from a function table
-for this chapter, so this section does not state it. For the
-160, the function table does show reset overriding everything
+The clear-versus-load priority for the 163 is settled by the
+function table: clear wins. Nexperia Rev. 5 (12 October 2018),
+Table 3, has a reset row with MR LOW, clock rising, and PE,
+CET and CEP all don't-care, giving all outputs LOW; both
+parallel-load rows require MR HIGH. Section 1 says the same
+in prose: a LOW at MR "sets Q0 to Q3 LOW after the next
+positive-going transition on the clock input (CP). This action
+occurs regardless of the levels at input pins PE, CET and
+CEP." TI agrees (SCLS298D: the clear "sets all four of the
+flip-flop outputs low after the next low-to-high transition
+of CLK, regardless of the levels of the enable inputs").
+For the 160, the function table does show reset overriding everything
 (MR LOW gives all outputs LOW regardless of clock, enables
 and load), and load overriding the enables; that much is
 verified for the 160.
@@ -856,12 +875,23 @@ build a divide-by-N that is neither a power of two nor ten,
 by starting the count part-way through its sequence instead
 of at zero.
 
-**UNVERIFIED:** the exact "load on terminal count" wiring
-for a divide-by-N load example — which output feeds back to
-PE/LOAD, and whether an extra gate is needed — was not
-verified against an application figure for this chapter, so
-this section asserts no such wiring diagram; a worked,
-datasheet-checked diagram is needed before one is printed.
+The datasheets give no load-on-terminal-count recipe for a
+divide-by-N: neither Nexperia Rev. 5 nor TI SCLS298D shows a
+PE/LOAD-based wiring. The manufacturer recipe is reset-based.
+Decode the last state you want, feed the gate output to the
+synchronous clear, and the counter clears to zero on the next
+clock edge — TI SCLS298D §2: "decoding the Q outputs for the
+maximum count desired. The active-low output of the gate used
+for decoding is connected to CLR to synchronously clear the
+counter to 0000". Nexperia Rev. 5 §11 gives the worked
+examples: a modulo-5 counter feeds Q2 through one inverter
+back to MR — the counter visits 0 to 4, and the Q2 pulse
+lasts a full clock period, glitch-free because the reset is
+synchronous. The rule to remember is which state to decode:
+with a synchronous clear, decode the last state you want,
+not the first state you don't — decoding the first unwanted
+state would let it sit for a whole clock period before the
+clear acts.
 
 Cascading these parts into a wider counter is where the
 synchronous design pays for its extra pins. Both enables must
@@ -888,13 +918,19 @@ CP-to-Qn 22 ns typical, 37 ns maximum at 4.5 V (19 ns typical
 at 5 V, CL = 15 pF); CP-to-TC 25 ns typical, 43 ns maximum at
 4.5 V; CET-to-TC 17 ns typical, 30 ns maximum at 4.5 V.
 
-**UNVERIFIED:** the exact pin-to-pin cascade recipe — which
-enable input of the upper stage receives the lower stage's
-TC, and what the other enable is tied to — was not verified
-against a datasheet application figure. The datasheets'
-prose ("TC … can be used to enable the next cascaded stage")
-is verified; a specific wiring diagram is not, and this
-section prints none from memory.
+The pin-to-pin cascade recipe is TI SCLS298D Rev. D,
+Figure 2, and Nexperia Rev. 5 §1 agrees in prose: all
+stages share one clock; CLR and LOAD are common to all
+stages; the lowest stage has both ENT and ENP tied to the
+common Count (HIGH) / Disable (LOW) line; each higher
+stage's ENT is driven by the previous stage's RCO, and its
+ENP is tied to the common Count line. In Nexperia naming:
+the lower stage's TC drives the upper stage's CET, and the
+upper stage's CEP is tied HIGH. TI warns that the Figure 2
+circuit is not valid above 18 MHz at 25 °C and 4.5 V,
+because of an RCO glitch on the second and succeeding
+stages — at bench speeds that limit is nowhere near
+binding, but it is a real one at speed.
 
 A sourcing note that changes what the reader can actually
 buy, stated plainly rather than buried. The 74HC160 has no
@@ -960,7 +996,7 @@ headline figures for the 191 are a typical tpd of 13 ns,
 2–6 V operation, ±4 mA output drive at 5 V, and 80 µA maximum
 ICC (SCLS121D).
 
-The 74HC193 (Nexperia data sheet dated 14 March 2024; TI
+The 74HC193 (Nexperia Rev. 8, 14 March 2024; TI
 SCLS122D, Rev. D) answers the same question with two clocks
 and no direction pin. It has a count-up clock CPU and a
 count-down clock CPD, each rising-edge triggered: to count
@@ -1005,13 +1041,19 @@ counted." After resetting or loading a 193, make sure the
 idle clock is HIGH, or the first "count" after the reset
 will be one you never asked for. TI's headline figures for
 the 193 are a typical tpd of 20 ns and 2–6 V operation
-(SCLS122D).
-
-**UNVERIFIED:** exact fmax and maximum propagation-delay
-numbers for the Nexperia 191 and 193 in their current
-revisions were not cleanly extracted; this section uses the
-TI headline tpd figures above (13 ns and 20 ns typical) and
-quotes no Nexperia maxima.
+(SCLS122D). Nexperia's own Table 8 figures, at 4.5 V, are
+now on the record. For the 191 (Rev. 5, 13 August 2019):
+fmax 20 MHz minimum, 33 MHz typical, 16 MHz minimum over
+−40 to +85 °C; CP-to-Qn 26 ns typical, 44 ns maximum at
+25 °C, 55 ns maximum over −40 to +85 °C, 66 ns maximum over
+−40 to +125 °C; at 5.0 V, CL = 15 pF, 36 MHz typical fmax
+and 22 ns typical CP-to-Qn. For the 193 (Rev. 8, 14 March
+2024): fmax 20 MHz minimum, 41 MHz typical, 16 MHz minimum
+over −40 to +85 °C; CPU/CPD-to-Qn 23 ns typical, 43 ns
+maximum at 25 °C, 54 ns maximum over −40 to +85 °C, 65 ns
+maximum over −40 to +125 °C. The 193's Rev. 5 (29 January
+2016) gives identical values; Rev. 8 is the current
+revision. These are the numbers to design to at 4.5 V.
 
 At a glance:
 
@@ -1030,7 +1072,7 @@ At a glance:
 The 74HC4017 is a decade counter, and it is also the part most
 likely to be misread in this chapter, so its description starts
 with what it is not. It is a 5-stage Johnson counter with 10
-decoded outputs (Nexperia Rev. 5, 3 February 2016). It is a
+decoded outputs (Nexperia Rev. 8, 27 March 2024). It is a
 decade counter in the sense that it has ten states, 0–9, and
 then repeats. It is not a BCD counter: there is no 4-bit
 binary-coded output anywhere on the chip. Instead, each state
@@ -1056,12 +1098,19 @@ specifies, so this section presents it as technique, with
 its own diode-drop and resistor sizing to be worked out as
 design content, not as a datasheet quote.
 
-**UNVERIFIED:** the 4017 datasheet's own per-pin output-current
-maximum was not extracted for this chapter, so this section
-quotes no per-pin mA figure for the 4017; LEDs need their own
-series resistors and anything beyond a couple of LEDs needs a
-transistor buffer, as a matter of ordinary HC output practice
-rather than a quoted 4017 limit.
+The 4017 datasheet's own per-pin output-current maximum is
+±25 mA (Nexperia Rev. 8 §7, Table 4, Limiting values, under
+the condition −0.5 V < VO < VCC + 0.5 V; TI SCHS200D Rev. D
+agrees exactly) — but that is an absolute-maximum, damage
+limit, not a drive rating, and the package VCC and GND
+current limit is 50 mA. The characterised drive level is
+4 mA (VOH and VOL are specified at 4 mA at 4.5 V, Rev. 8
+Table 6), so ten LEDs at 4 mA total 40 mA, inside the
+package limit, while ten at 25 mA each would total 250 mA
+and exceed it five times over. LEDs still need their own
+series resistors and anything beyond a couple of LEDs needs
+a transistor buffer, as a matter of ordinary HC output
+practice, now backed by the quoted 4017 limits.
 
 Clocking, in Nexperia's naming, uses two clock inputs, CP0
 and CP1. The counter advances on either a LOW-to-HIGH
@@ -1093,11 +1142,17 @@ TI's CD part calls pin 12 TC (carry) and describes it as
 transitioning after output 9 goes LOW, in conjunction with
 the clock-enable input to cascade several stages.
 
-**UNVERIFIED:** whether TI's TC waveform is identical to
-Nexperia's Q5-9 waveform. The descriptions sound similar but
-are not word-identical, so a cascade diagram drawn for one
-must be re-checked against the other's datasheet before
-publication.
+TI's TC waveform is identical to Nexperia's Q5-9 waveform.
+Both are HIGH in states 0–4 and LOW in states 5–9, rising
+at the 9→0 wrap: Nexperia Rev. 8 §1 says Q5-9 "is LOW while
+the counter is in states 5, 6, 7, 8 and 9", and TI
+SCHS200D Rev. D says in its truth-table footnote, "If n < 5
+TC = H, Otherwise = L", and in its description, "The CARRY
+(TC) output transitions low to high after OUTPUT 10 goes
+from high to low." A cascade diagram drawn for one therefore
+works for the other, as far as the carry waveform goes; the
+clock and clock-enable naming still differs, so check the pin
+table of the exact part bought.
 
 Two more 4017 facts deserve a place before the worked
 example. First, the pin order is not sequential on the
@@ -1121,13 +1176,12 @@ Nexperia's DIP 4017 is gone: its Rev. 5 ordering table
 (3 February 2016) lists only surface-mount variants, and
 distributor listings mark the DIP 74HCT4017N obsolete. The
 sole current-manufacturer DIP is TI's CD74HC4017E in PDIP-16
-(TI SCHS200D, Rev. D, October 2003), listed Active by
-distributors with a 16-week lead. **UNVERIFIED:** that ACTIVE
-from TI itself — TI direct was out of stock when checked, and
-TI's own product page shows no status word for the E variant —
-and current stock generally, so re-check before any "order
-this" wording. The chapter must not promise a
-current-manufacturer DIP 4017. The practical advice is to buy
+(TI SCHS200D, Rev. D, October 2003), listed ACTIVE in TI's
+own package addendum dated 17 September 2026 — so this
+chapter can name CD74HC4017E as the DIP route. Stock is a
+separate question: TI direct was out of stock when checked,
+and the 16-week distributor lead is a distributor figure,
+so re-check stock before ordering. The practical advice is to buy
 whichever DIP 4017 a distributor actually has, and to check the
 pin table of the exact part bought, because the TI and Nexperia
 clock and carry naming differs.
@@ -1439,15 +1493,25 @@ stage, or a miscounted wrap on a divide-by-10 stage — and
 the stages before it can be checked independently, one ratio
 at a time.
 
-**UNVERIFIED:** the exact reset-pulse behaviour of the
-divide-by-6 wiring — whether the Q6 state that triggers
-reset is visible at all, and whether extra gating is needed
-to make the reset pulse clean — was not verified against an
-application figure for this chapter. The chain above is a
-paper design: its divide ratios follow directly from the
-4017's counting sequence and its asynchronous reset, but a
-bench version needs a tested diagram, not this prose, before
-it is presented as a build.
+The reset-pulse behaviour of the divide-by-6 wiring is
+settled by the datasheet's own application figure
+(Nexperia Rev. 8 §11, Fig. 11; Fig. 13 in Rev. 5): the
+chosen Qn output is wired to f_out and directly to MR —
+for divide-by-6, Q6 to MR — with no extra gating. The Q6
+state is visible, but only as a narrow pulse: with an
+asynchronous reset "the output pulse widths are narrow
+(minimum expected pulse width is 6 ns)", and they "can be
+enlarged by inserting an RC network at the MR input". The
+numbers at 4.5 V are CP0-to-Qn 23 ns typical, 46 ns
+maximum at 25 °C, and MR-to-Qn 19 ns typical, 46 ns
+maximum, so the Q6 HIGH pulse is tens of nanoseconds at
+most — invisible on an LED — while the tick this chapter
+takes from Q0's rising edge at reset is a full clock period
+wide. The chain above is a paper design: its divide ratios
+follow directly from the 4017's counting sequence and its
+asynchronous reset, and the reset wiring now follows the
+datasheet figure, but a bench version still needs a tested
+diagram, not this prose, before it is presented as a build.
 
 ## Bench build: a seconds counter, 00 to 59, on BCD LEDs
 
@@ -1492,14 +1556,18 @@ and able to sink or source up to 200 mA). Plain 74HC inputs
 at 5 V need VIH of about 3.5 V, by interpolation from
 Nexperia's 74HC365 Rev. 4 static characteristics (VIH min
 3.15 V at 4.5 V, 4.2 V at 6.0 V; the 5 V figure is a
-DERIVED ESTIMATE, not a table row). A HIGH somewhere near
-3.3 V would be below that requirement, so a bipolar NE555
+DERIVED ESTIMATE, not a table row). A HIGH of 3.3 V typical
+— 2.75 V guaranteed minimum — is below that requirement, so a bipolar NE555
 driving 74HC inputs directly is marginal by specification,
-even though it often appears to work on a bench. The exact
-NE555 VOH values at 5 V under load were not read directly
-from TI SLFS022I's electrical table for this chapter (UNVERIFIED as exact numbers), and they are
-not printed here; the qualitative conclusion does not
-depend on them.
+even though it often appears to work on a bench. The
+numbers are from TI SLFS022K Rev. K (Sep 1973, rev. Mar
+2026), §5.5 Electrical Characteristics: high-level output
+voltage at VCC = 5 V and I_OH = −100 mA is 2.75 V minimum,
+3.3 V typical, for the NA555, NE555 and SA555 (no maximum
+given); the SE555's minimum is 3 V. The qualitative
+conclusion does not depend on the typical: the guaranteed
+minimum sits below HC VIH, so the margin is negative by
+specification.
 
 The fix costs nothing, because the chip is already in the
 build: route the 555 output through one spare 74HC14
@@ -1808,12 +1876,18 @@ which it should be at each count.
   description; Rev. 4 timing table (15 ns setup, 3 ns hold).
 - Nexperia, 74HC74-Q100 product data sheet, Rev. 5 — D
   flip-flop timing, recovery, input transition rate.
-- TI, SNx4HC74, Rev. F — device information, SN74HC74N PDIP.
+- TI, SNx4HC74, Rev. F — device information, SN74HC74N PDIP;
+  §6.7 and §6.9 timing at 4.5 V (setup 20 ns at 25 °C,
+  25 ns over −40 to +85 °C; hold 0 ns; recovery 5/6 ns).
 - onsemi, 74HC74/D — both-outputs-HIGH footnote on
   simultaneous preset/clear release.
 - Nexperia, 74HC73 product data sheet, Rev. 8 — JK function,
   pinout (VCC pin 4, GND pin 11), timing.
-- TI, CD74HC107, Rev. D — JK function, PDIP ordering.
+- TI, CD74HC73, SCHS134G, Rev. G, Feb 1998, rev. Oct 2022 —
+  CD74HC73E PDIP-14 ACTIVE (package addendum 18 September
+  2026); no SN74HC73 exists.
+- TI, CD74HC107, Rev. D — JK function, PDIP ordering;
+  CD74HC107E ACTIVE (package addendum 23 October 2026).
 - Nexperia, 74HC109 product data sheet, Rev. 6 — inverted-K
   function table, timing.
 - TI, SNx4HC109, Rev. C — function table, SN74HC109N PDIP
@@ -1841,9 +1915,19 @@ which it should be at each count.
   out shift register, Rev. 5, 21 August 2017.
 - Nexperia, 74HC194, 4-bit bidirectional universal shift
   register, Rev. 4, 16 March 2021.
+- TI, CD74HC194, SCHS164G, Sep 1997, rev. May 2006 — truth
+  table agrees with Nexperia Rev. 4 function table (shift
+  left S1 HIGH, S0 LOW via DSL; shift right S1 LOW, S0 HIGH
+  via DSR).
 - Nexperia, 74HC595 and 74HCT595, 8-bit serial-in, serial
   or parallel-out shift register with output latches;
   3-state, Rev. 9, 28 February 2017.
+- TI, CD74HC273 / CD74HC374 / CD74HC574 / CD74HC164 /
+  CD74HC194 / CD74HC595 (SCHS174D, SCHS183E, SCHS155E,
+  SCHS164G, SCHS353A) — PDIP orderables ACTIVE per TI
+  package addenda, 18 September 2026 (595: 10 August 2026);
+  CD74HC165E Last Time Buy (SCHS156D addendum,
+  23 October 2026).
 - Philips, 74HC/HCT93 product specification, December 1990
   (file IC06) — 74HC93 sections, gated-AND reset, decoding
   spikes warning.
@@ -1860,30 +1944,41 @@ which it should be at each count.
   27 March 2019 — decade sequence, asynchronous clear.
 - Nexperia, 74HC161 product data sheet, Rev. 4,
   4 October 2018 — binary sequence, asynchronous clear.
-- Nexperia, 74HC163 product data sheet, Rev. 4,
-  28 December 2015 — binary sequence, synchronous clear.
+- Nexperia, 74HC163 product data sheet, Rev. 5,
+  12 October 2018 — binary sequence, synchronous clear;
+  §1 and Table 3 (clear wins over load), §11 application
+  figures (modulo-5 and modulo-11 counters).
 - TI, SN74HC161, SCLS297D, Rev. D, January 1996, revised
   September 2003 — asynchronous clear wording, PDIP ordering.
 - TI, SN74HC163, SCLS298D, Rev. D, January 1996, revised
   October 2003 — synchronous clear wording, PDIP ordering.
 - Nexperia, 74HC191 product data sheet, Rev. 5,
   13 August 2019 — one clock, U/D pin, no reset pin,
-  asynchronous load.
+  asynchronous load; Table 8 dynamic figures (fmax 20/33
+  MHz, CP-to-Qn 26/44/55/66 ns at 4.5 V).
 - TI, SN74HC191, SCLS121D, Rev. D, December 1982, revised
   October 2003 — MAX/MIN and RCO, decoding-spikes warning.
-- Nexperia, 74HC193 product data sheet, dated
+- Nexperia, 74HC193 product data sheet, Rev. 8,
   14 March 2024 — two clocks, asynchronous MR, TCU/TCD,
-  cascaded chain not fully synchronous.
+  cascaded chain not fully synchronous; Table 8 dynamic
+  figures (fmax 20/41 MHz, CPU/CPD-to-Qn 23/43/54/65 ns
+  at 4.5 V).
 - TI, SN74HC193, SCLS122D, Rev. D, December 1982, revised
   October 2003 — two clocks, MR, terminal outputs.
-- Nexperia, 74HC4017 / 74HCT4017 product data sheet, Rev. 5,
-  3 February 2016 — Johnson counter, decoded outputs,
-  Q0 HIGH after reset, Q5-9 carry, self-correction.
+- Nexperia, 74HC4017 / 74HCT4017 product data sheet, Rev. 8,
+  27 March 2024 — Johnson counter, decoded outputs,
+  Q0 HIGH after reset, Q5-9 carry, self-correction; §7
+  Table 4 (IO ±25 mA, ICC 50 mA), §10 Table 7 dynamic
+  figures, §11 Fig. 11 divide-by-2-through-10.
 - TI, CD74HC4017, SCHS200D, Rev. D, November 1997, revised
-  October 2003 — CD ordering table, CP/CE and TC naming; E variant
-  distributor-Active (16-week lead), TI direct out of stock.
-- TI, CD74HC93, SCHS138C, August 1997, revised September
-  2003; packaging addendum dated 9 November 2025 —
+  October 2003 — CD ordering table, CP/CE and TC naming;
+  CD74HC4017E PDIP-16 ACTIVE per TI package addendum
+  17 September 2026; TC waveform identical to Nexperia
+  Q5-9 (truth-table footnote "If n < 5 TC = H").
+- TI, CD74HC93, SCHS138D, Rev. D, November 1998, revised
+  March 2022, §5.6 — CP1-to-Q3 29 ns typical, 49 ns
+  maximum at 25 °C, 61 ns maximum over −40 to +85 °C at
+  4.5 V; packaging addendum dated 9 November 2025 —
   CD74HC93E PDIP-14 ACTIVE.
 - TI, CD74HC390, SCHS185E, Rev. E, September 1997, revised
   April 2022 — CD74HC390E PDIP-16 ACTIVE.
@@ -1903,6 +1998,9 @@ which it should be at each count.
   Sep 2014 — astable formulas, thresholds about 1/3
   and 2/3 VCC, pinout, TTL-compatible output able to
   sink or source up to 200 mA.
+- TI, NE555/SA555/SE555, SLFS022K, Sep 1973, rev.
+  Mar 2026, §5.5 — VOH at 5 V, −100 mA: 2.75 V minimum,
+  3.3 V typical (SE555: 3 V minimum, 3.3 V typical).
 - ST, NE555, Doc ID 2182, Rev. 6, Jan 2012 — same
   astable formulas; 0.01 µF on CONT (pin 5) in the
   typical astable schematic.
